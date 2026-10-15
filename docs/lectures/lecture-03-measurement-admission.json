@@ -1,0 +1,587 @@
+{
+  "lecture_number": 3,
+  "title": "Measurement Admission",
+  "subtitle": "Screening operationalizations, not worlds",
+  "running_header": "Lecture 3 · Measurement Admission",
+  "author": "ECN 593 short course notes (study draft, not a frozen specification)",
+  "date": "August 2026",
+  "abstract": "History matching already budgets for model discrepancy: the kernel need not reproduce the real system even at the right calibration. That admission is about the simulator. A second, logically distinct failure is that the number treated as the outcome is not the functional named by the estimand. Construct validity is the psychometric name for that second problem; classical measurement-error theory is the econometric name for a special case of it. This lecture develops the distinction, recalls attenuation and its limits, and then treats admission of outcome measures as a pre-declared restriction on operationalizations rather than a search over specifications. A three-point arithmetic example shows why a measure that loads on a treatment-channel covariate fails a frozen correlation threshold. The project's measurement layer is a cvprofiles-style admission of outcome measures: it screens measures, not not-ruled-out calibrations. History-matching waves have not been run.",
+  "elements": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "1. Two different ‘the model is not the world’ problems"
+    },
+    {
+      "type": "paragraph",
+      "text": "There are at least two ways in which a numerical exercise can fail to be about the thing it claims to be about. They are routinely collapsed into a single complaint — “the model is not the world” — and they should not be. One is a failure of the kernel. The other is a failure of the score."
+    },
+    {
+      "type": "paragraph",
+      "text": "Call the first <i>model discrepancy</i>. A simulator, even when evaluated at the “true” input, need not reproduce the physical or social system it is intended to stand for. Kennedy and O’Hagan (2001) introduced this as <i>model inadequacy</i>: the computer code is built on assumptions and simplifications that do not match reality exactly, so a structured discrepancy remains between the best-fitting run and the system. History matching takes the same object seriously. The implausibility statistic used in this project (METHODOLOGY.md §6; Lecture 1) is"
+    },
+    {
+      "type": "display",
+      "text": "I(c) = (z − M(c))′ V<sup>−1</sup> (z − M(c)),"
+    },
+    {
+      "type": "paragraph",
+      "text": "where the matrix V folds sampling variation in the external anchors, Monte Carlo error in the simulated moments, and an explicit discrepancy budget δ. The budget is frozen at δ = (2, 2, 2, 2) percentage points. A calibration c is retained if I(c) stays below a χ<sup>2</sup> threshold. The kernel is thereby permitted not to hit z even at a not-ruled-out c. That is an admission that the model is not the world. It is an admission about the <i>simulator</i>."
+    },
+    {
+      "type": "paragraph",
+      "text": "Call the second <i>construct failure</i>, or measurement failure. The estimand θ names a functional of a random variable Y. The spreadsheet, or the simulator’s output file, contains a column s. Nothing in the arithmetic of OLS, of a causal forest, or of history matching checks that s is Y. If s is a noisy copy of Y, classical measurement-error formulae apply. If s is a different attribute, or a mixture of the named attribute with a covariate that sits on the treatment channel, the formulae do not apply, and the disease is not noise. Cronbach and Meehl (1955) named the general problem <i>construct validity</i>: the question of what attribute accounts for variance in a score, when no accepted criterion or universe of content fully defines that attribute. Messick (1995) restated validity as a property of score <i>meaning</i>, not of a test as an object."
+    },
+    {
+      "type": "callout",
+      "title": "History matching already admits discrepancy",
+      "text": "History matching does not assume perfect measurements of the real system, and it does not assume a perfect kernel. The discrepancy term δ is in V by design. What history matching does assume, and does not interrogate, is that the chosen moments M(c) are the right functionals of the outcome the estimand named. Implausibility compares simulated moments of a designated Y to external anchors z. If the designated Y is the wrong attribute, a small I(c) means the kernel matches the wrong thing. Discrepancy and construct failure are not substitutes. Budgeting for δ does not screen operationalizations of Y."
+    },
+    {
+      "type": "paragraph",
+      "text": "The rest of the lecture is about the second problem, and about a deliberately small response to it: a pre-declared admission rule on candidate scores. The rule does not replace discrepancy. It does not re-filter the not-ruled-out-yet (NROY) set. It decides which columns are allowed to play the role of Y before any wave is run."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "2. From construct validity to the spreadsheet"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Psychometrics: content, criterion, construct"
+    },
+    {
+      "type": "paragraph",
+      "text": "The 1954 <i>Technical Recommendations</i> of the American Psychological Association distinguished four kinds of validation. Cronbach and Meehl (1955) grouped predictive and concurrent validity as <i>criterion-oriented</i> procedures: one accepts an external criterion as defining what is to be measured, administers the test, and computes a correlation. <i>Content validity</i> is established deductively, by arguing that the items are a sample of a universe the investigator is willing to treat as the variable. <i>Construct validation</i> is required whenever “no criterion or universe of content is accepted as entirely adequate to define the quality to be measured.” The investigator’s question becomes: what constructs account for variance in test performance?"
+    },
+    {
+      "type": "paragraph",
+      "text": "The intellectual device they introduced is the <i>nomological network</i>: the interlocking system of laws in which a construct occurs. A construct is made scientifically definite by the laws that relate it to other constructs and to observables. Construct validation is possible only when some of those laws yield predicted relations among observables. Failure of a prediction can indict the test, the construct, or a connecting law; the evidence is evidence for the whole chain. The construct is “at best adopted, never demonstrated to be ‘correct.’”"
+    },
+    {
+      "type": "paragraph",
+      "text": "Messick (1995) collapsed the older trio — content, criterion, construct — into a unified account. Validity is “an overall evaluative judgment of the degree to which empirical evidence and theoretical rationales support the adequacy and appropriateness of interpretations and actions on the basis of test scores.” It is a property of score meaning, not of the instrument. Two threats to construct validity organize the diagnostic:"
+    },
+    {
+      "type": "bullet",
+      "items": [
+        "<b>Construct underrepresentation.</b> The score is too narrow for the attribute named: relevant processes or content are missing.",
+        "<b>Construct-irrelevant variance.</b> The score is too wide: it loads on attributes other than the one named. Contamination is the leading case."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "An economist can use this without becoming a psychometrician. The estimand θ = E[Y(1) − Y(0)], or the project’s targeting contrast θ<sub>2</sub>, is a functional of a named Y. A column in the data is an operationalization. Criterion-oriented thinking says: this column correlates with a gold standard, so it may be used. Content-oriented thinking says: these survey items sample the universe of preventive behaviors. Construct-oriented thinking says: neither a correlation nor an item list settles whether the column is the Y in the scientific claim. What is required is a stated network — what the attribute should relate to, and what it should <i>not</i> relate to — and a willingness to reject a score that violates the network."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Econometrics: errors in variables"
+    },
+    {
+      "type": "paragraph",
+      "text": "Econometrics inherited a narrower, and more operational, fragment of the same problem. Griliches (1974) surveyed errors-in-variables and other unobservables as a recurring identification obstacle, not a nuisance. The 1986 handbook chapter on economic data issues (Griliches 1986) put the classical errors-in-variables model (EVM) at the centre of the encounter between the econometrician and imperfect micro data. Aigner, Hsiao, Kapteyn, and Wansbeek (1984) collected the latent-variable apparatus. The textbook implication, for a single mismeasured regressor under classical assumptions, is attenuation: ordinary least squares is biased toward zero in magnitude. Hausman (2001) called the pattern the “Iron Law of Econometrics.”"
+    },
+    {
+      "type": "paragraph",
+      "text": "Bound, Brown, and Mathiowetz (2001), in the survey chapter that remains the applied economist’s reference, state the classical assumption explicitly. Errors in measuring a particular variable are uncorrelated with the true value of that variable, the true values of other variables in the model, and any errors in measuring those variables. They then spend most of the chapter documenting that the assumption often fails in survey data: errors are frequently negatively correlated with true values. When errors are not classical, standard corrections do not eliminate bias, but “one can often use them to obtain bounds on this bias.” That last clause is a partial-identification claim. It will matter in Section 7."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "The spreadsheet habit"
+    },
+    {
+      "type": "paragraph",
+      "text": "Applied causal work often treats Y as given once it is in the spreadsheet. The research sequence is: name an estimand, argue for an identification strategy (unconfoundedness, an instrument, a discontinuity), and then run the estimator on the columns at hand. Measurement error, if it is discussed, is discussed as classical noise on a regressor, hence as attenuation. Outcome measurement is treated as a precision issue. Hausman (2001) is partly responsible for that habit, and correctly so <i>under classical assumptions</i>: a mismeasured left-hand-side variable does not bias a linear slope; it only inflates the residual variance. The habit becomes costly when the failure is not classical noise on a well-named Y, but a score that is not Y."
+    },
+    {
+      "type": "paragraph",
+      "text": "The cost is easy to miss because nothing in the output of OLS, IV, or a forest flags it. Standard errors, balance tables, and overlap plots are silent on whether the column is the construct. Psychometrics had a vocabulary for that silence. Econometric measurement-error theory had a vocabulary for a special case of it. Admission restrictions, as used below, are a way of putting a third vocabulary on the table: freeze, before seeing estimates, which operationalizations are allowed to stand in for Y."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "3. Classical measurement error, and what it is not"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "The classical linear case"
+    },
+    {
+      "type": "paragraph",
+      "text": "Let Y* be the attribute named by the estimand, X a regressor, and u a structural disturbance. The classical measurement-error model (Bound, Brown, and Mathiowetz 2001; Griliches 1986) writes"
+    },
+    {
+      "type": "display",
+      "text": "X = X* + m,    Y = Y* + n,"
+    },
+    {
+      "type": "paragraph",
+      "text": "with m and n uncorrelated with (X*, Y*, u) and with each other. In the simple regression Y* = α + β X* + u, replacing X* by X yields the probability limit"
+    },
+    {
+      "type": "display",
+      "text": "plim β̂<sub>OLS</sub> = β · λ,    λ = Var(X*) / (Var(X*) + Var(m)) ∈ (0, 1]."
+    },
+    {
+      "type": "paragraph",
+      "text": "The factor λ is the reliability ratio. The bias is toward zero. That is attenuation. It is a statement about a <i>regressor</i> measured with classical noise. If instead X* is observed and only Y is noisy, with n classical, β̂<sub>OLS</sub> remains consistent; only the residual variance rises (Hausman 2001). Students who remember “measurement error attenuates” as a slogan about every column are remembering the regressor case and over-applying it."
+    },
+    {
+      "type": "paragraph",
+      "text": "Two immediate caveats, already in the classical apparatus. First, with several mismeasured regressors the biases need not all point toward zero; contamination across covariates can reverse signs (Aigner, Hsiao, Kapteyn, and Wansbeek 1984). Second, in a nonlinear model even classical noise on X* is not a simple shrinkage of β. The linear attenuation formula is not a general licence."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Nonclassical error"
+    },
+    {
+      "type": "paragraph",
+      "text": "Drop the orthogonality of m to X*. A leading empirical pattern in validation studies of earnings, hours, and transfer receipt is mean-reverting error: Cov(m, X*) &lt; 0 (Bound, Brown, and Mathiowetz 2001). Mean-reverting noise on a regressor attenuates less than the classical formula predicts, and can in principle inflate. The sign of the bias is no longer free. What remains true is that the observed X is not a sufficient statistic for X* in the way the classical model assumed."
+    },
+    {
+      "type": "paragraph",
+      "text": "A related, and for this lecture more important, distinction is <i>differential</i> versus <i>nondifferential</i> error. Bound, Brown, and Mathiowetz call measurement error in an explanatory variable nondifferential when, conditional on the true X*, the observed X contains no information about Y*. Differential error is the complement: the measurement process itself is informative about the outcome, or about treatment. In a treatment-effect setting the dangerous case is error in the <i>outcome</i> that depends on D. Classical n, independent of D, does not bias a difference in means. An n whose distribution shifts with D does. Masking treatment status when outcomes are coded is the experimental gesture that tries to prevent that shift. Observational scores have no such gesture unless one is built."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Misclassification of treatment"
+    },
+    {
+      "type": "paragraph",
+      "text": "A binary treatment measured with error is not a classical continuous EVM. If D* ∈ {0,1} is the true assignment and D is what is recorded, the error is a pair of misclassification probabilities, written"
+    },
+    {
+      "type": "display",
+      "text": "α = P(D = 1 | D* = 0),    β = P(D = 0 | D* = 1)."
+    },
+    {
+      "type": "paragraph",
+      "text": "Aigner (1973) showed that OLS of Y on a misclassified binary D is again biased toward zero, in parallel with the continuous case. The later identification literature is more precise about what else is needed. Mahajan (2006) gives nonparametric identification of a regression with a misclassified binary regressor when an additional variable is correlated with D* and unrelated to the classification error. Hu (2008) extends the argument to a discrete explanatory variable in nonlinear models, via a matrix diagonalization of observed joints. These are results about <i>treatment</i> (or more generally a discrete regressor) being mislabelled. They are not results about the outcome being the wrong attribute."
+    },
+    {
+      "type": "paragraph",
+      "text": "Keep the diseases separate:"
+    },
+    {
+      "type": "bullet",
+      "items": [
+        "<b>Classical noise on a regressor.</b> Attenuation under orthogonality; not in general otherwise.",
+        "<b>Classical noise on an outcome.</b> No bias in a linear contrast; loss of precision.",
+        "<b>Misclassification of D.</b> A discrete error process; point identification then requires an instrument, a repeated measure, or a restriction on the classification probabilities.",
+        "<b>Differential error in Y with respect to D.</b> The measurement process depends on treatment. Difference-in-means of the score is not a difference-in-means of Y*.",
+        "<b>A score that loads on a treatment-channel covariate.</b> Not noise. The column is partly the covariate. This is Messick’s construct-irrelevant variance, and it is the disease the admission rule below is written to catch."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "4. Loading on a treatment-channel covariate is a different disease"
+    },
+    {
+      "type": "paragraph",
+      "text": "Suppose the named outcome is a terminal behavior Y<sub>T</sub> ∈ [0, 1]. Suppose x3 is a baseline propensity, used in the kernel as a covariate and, in this project, sitting on the channel through which targeting operates. A survey item that is partly Y<sub>T</sub> and partly x3 is not a noisy measure of Y<sub>T</sub>. It is a different random variable. Contrasts of that item across assignment rules mix the targeting effect on behavior with the mechanical fact that the targeted units were chosen for their place in the x3 (or degree) distribution."
+    },
+    {
+      "type": "paragraph",
+      "text": "Write a linear contamination, ignoring clipping and noise for a moment,"
+    },
+    {
+      "type": "display",
+      "text": "s = ψ Y<sub>T</sub> + (1 − ψ) x3,    ψ ∈ [0, 1]."
+    },
+    {
+      "type": "paragraph",
+      "text": "If ψ = 1, s is Y<sub>T</sub>. If ψ = 0, s is x3. For ψ ∈ (0, 1) the score has construct-irrelevant variance. The ordinary reliability ratio does not describe the bias in a treatment contrast, because the contaminant is not an orthogonal measurement error: it is a covariate that assignment rules may target. Degree targeting, in this project, selects hubs; hubs are not a random sample of x3. A contrast of s between π<sub>2</sub> and π<sub>0</sub> then partly reports a contrast of x3. Classical attenuation is the wrong picture. The right picture is contamination of the estimand."
+    },
+    {
+      "type": "paragraph",
+      "text": "An admission restriction aimed at this disease will look like a discriminant-validity check: the score should not correlate too strongly with the contaminant. That is a network claim in Cronbach and Meehl’s sense — a stated law about what the construct is <i>not</i> — not a claim that s is a classical proxy for Y<sub>T</sub>. Section 5 computes the check on a three-point example. Section 6 explains why the threshold has to be frozen before anyone sees Θ."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "5. Worked example: why m<sub>3</sub> is excluded"
+    },
+    {
+      "type": "paragraph",
+      "text": "The following numbers are invented for arithmetic transparency. They are not simulation output, and they are not estimates. Three agents, a true terminal outcome Y<sub>T</sub>, and a treatment-channel covariate x3 (baseline propensity):"
+    },
+    {
+      "type": "table",
+      "caption": "Table 1. Invented three-agent configuration. The bad-item score is computed as s = 0.5 Y<sub>T</sub> + 0.5 x3, ignoring clipping and noise.",
+      "header": true,
+      "rows": [
+        [
+          "Agent i",
+          "Y<sub>T,i</sub>",
+          "x3<sub>i</sub>",
+          "s<sub>i</sub> = 0.5 Y<sub>T,i</sub> + 0.5 x3<sub>i</sub>"
+        ],
+        [
+          "1",
+          "0.20",
+          "0.90",
+          "0.55"
+        ],
+        [
+          "2",
+          "0.80",
+          "0.10",
+          "0.45"
+        ],
+        [
+          "3",
+          "0.50",
+          "0.80",
+          "0.65"
+        ],
+        [
+          "Mean",
+          "0.50",
+          "0.60",
+          "0.55"
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The arithmetic of the means is immediate: (0.20 + 0.80 + 0.50)/3 = 0.50, (0.90 + 0.10 + 0.80)/3 = 0.60, and each s<sub>i</sub> is the pairwise average, so s̄ = 0.55. Deviations from those means, products, and squares:"
+    },
+    {
+      "type": "table",
+      "caption": "Table 2. Pearson ingredients. Deviations from Table 1 means.",
+      "header": true,
+      "rows": [
+        [
+          "Agent i",
+          "s<sub>i</sub> − s̄",
+          "x3<sub>i</sub> − x̄3",
+          "(s<sub>i</sub> − s̄)(x3<sub>i</sub> − x̄3)",
+          "(s<sub>i</sub> − s̄)<super>2</super>",
+          "(x3<sub>i</sub> − x̄3)<super>2</super>"
+        ],
+        [
+          "1",
+          "0.00",
+          "0.30",
+          "0.00",
+          "0.00",
+          "0.09"
+        ],
+        [
+          "2",
+          "−0.10",
+          "−0.50",
+          "0.05",
+          "0.01",
+          "0.25"
+        ],
+        [
+          "3",
+          "0.10",
+          "0.20",
+          "0.02",
+          "0.01",
+          "0.04"
+        ],
+        [
+          "Sum",
+          "0",
+          "0",
+          "0.07",
+          "0.02",
+          "0.38"
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The Pearson product-moment correlation is the cosine of the deviation vectors:"
+    },
+    {
+      "type": "display",
+      "text": "r(s, x3) = 0.07 / √(0.02 · 0.38) = 0.07 / √0.0076 = 7 / (2 √19) ≈ 0.803."
+    },
+    {
+      "type": "paragraph",
+      "text": "Equivalently, r = 7/(2√19). Because |0.803| &gt; 0.5, the score fails the pre-declared restriction “|corr(s, x3)| ≤ 0.5.” The failure is not close. About two-thirds of the (linear) variation in this three-point s is shared with x3: r<sup>2</sup> = 49/(4 · 19) = 49/76 ≈ 0.645."
+    },
+    {
+      "type": "paragraph",
+      "text": "Clipping to [0, 1] and Gaussian noise N(0, 0.10<sup>2</sup>) are part of the project’s m<sub>3</sub> definition (METHODOLOGY.md §8). They are ignored here because they are not needed for the qualitative conclusion: even the exact convex combination already fails the threshold. Noise of standard deviation 0.10 on a three-point sample could move the correlation, which is why the restriction in the project is evaluated on the simulated scores at c<sub>0</sub>, not on this toy. The toy is here to make the arithmetic inspectable, and to show that the disease is loading, not variance."
+    },
+    {
+      "type": "callout",
+      "title": "This is not classical attenuation",
+      "text": "If s were Y<sub>T</sub> plus classical noise, corr(s, x3) would equal corr(Y<sub>T</sub>, x3) times a reliability factor less than one, and a treatment contrast in s would be a noisy contrast in Y<sub>T</sub>. Here s is half x3 by construction. The correlation with x3 is a feature of the score, not a sampling accident. Excluding m<sub>3</sub> is a discriminant-validity decision: the measure is not admitted as an operationalization of Y<sub>T</sub>. It is not a claim that an OLS slope has been attenuated."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "6. Admission as a pre-declared restriction"
+    },
+    {
+      "type": "paragraph",
+      "text": "An admission rule is a restriction on the set of measures, declared before any calibration wave and before any look at Θ. Let M be a finite menu of scoring rules, each mapping a complete simulated history (and covariates) to a vector s. An admission rule A ⊂ M is a subset selected by criteria that do not refer to the resulting estimates of θ. The admitted set is written M*. In this project the criteria are:"
+    },
+    {
+      "type": "enum",
+      "items": [
+        "<b>Oracle (m<sub>1</sub>).</b> s = Y<sub>T</sub>. Admitted as a positive control: the planner sees the kernel’s own outcome. If m<sub>1</sub> were excluded, the restriction would be discarding the named object.",
+        "<b>Survey (m<sub>2</sub>).</b> s = clip(Y<sub>T</sub> + N(0, 0.15<sup>2</sup>)). Admitted as a classical-noise operationalization, clipping aside. This is the disease Hausman’s left-hand-side result describes.",
+        "<b>Bad item (m<sub>3</sub>).</b> s = clip(0.5 Y<sub>T</sub> + 0.5 x3 + N(0, 0.10<sup>2</sup>)). Excluded if |corr(s, x3)| &gt; 0.5, because it loads on a treatment-channel covariate."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The project freezes M* = {m<sub>1</sub>, m<sub>2</sub>} (METHODOLOGY.md §8). The image of the headline functional at a single world c<sub>0</sub> over those measures is"
+    },
+    {
+      "type": "display",
+      "text": "Θ<sub>cv</sub>  ≡  { θ<sub>2</sub>(c<sub>0</sub>; m) : m ∈ M* },"
+    },
+    {
+      "type": "paragraph",
+      "text": "where θ<sub>2</sub>(c; m) denotes the targeting contrast computed from scores produced by m rather than from Y<sub>T</sub>. Two properties of this definition are easy to miss."
+    },
+    {
+      "type": "bullet",
+      "items": [
+        "<b>It screens measures, not parameter configurations.</b> Membership in M* does not depend on c, on I(c), or on whether a point survived a history-matching wave. A cvprofiles-style admission of outcome measures is not a second implausibility filter.",
+        "<b>It does not re-filter NROY.</b> The not-ruled-out set is a set of worlds. M* is a set of scoring rules. Applying the admission rule to discard calibrations, or to drop NROY points whose θ looks inconvenient under m<sub>3</sub>, would be a different procedure, and is not this one."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Frozen before waves, or it is a specification search"
+    },
+    {
+      "type": "paragraph",
+      "text": "The contrast that makes the freeze obligatory is familiar from the identification literature, and from every applied paper that has ever dropped an outcome because “it did not work.” Consider two temporal orders."
+    },
+    {
+      "type": "paragraph",
+      "text": "<b>Order F (freeze).</b> Declare M, declare A, hence declare M*, then run waves, then report Θ<sub>cv</sub> at the pre-declared c<sub>0</sub>. If m<sub>3</sub> fails A, it is out, including in the state of the world where θ<sub>2</sub>(c<sub>0</sub>; m<sub>3</sub>) would have made the identified image look tighter, or more congenial to a foil."
+    },
+    {
+      "type": "paragraph",
+      "text": "<b>Order S (search).</b> Run waves, compute θ under every scoring rule, and then drop the measure that made Θ look bad — too wide, too far from a forest, too close to zero. The reported M* is then a function of the estimates. That is a specification search over operationalizations. It has the same logical status as dropping covariates until a star appears, and it cannot be audited by reading the restriction, because the restriction was not a restriction."
+    },
+    {
+      "type": "paragraph",
+      "text": "The Law of Decreasing Credibility (Manski 2003, p. 1; Lecture 2) already says that stronger assumptions buy smaller sets at a credibility price. An admission rule is one such assumption, applied to measures rather than to the complete-data law. Spending it after seeing the image spends it without paying: the reader cannot tell whether m<sub>3</sub> was excluded because it loaded on x3, or because it was inconvenient. Pre-declaration is what makes the exclusion a restriction rather than a result."
+    },
+    {
+      "type": "callout",
+      "title": "‘We dropped the measure that made Θ look bad’",
+      "text": "That sentence is the thing the freeze exists to forbid. An exclusion justified by |corr(s, x3)| &gt; 0.5, with the threshold and the contaminant named in METHODOLOGY.md before any wave, is auditable. An exclusion justified by the shape of Θ<sub>cv</sub> is not. The project’s measurement layer is the first kind. It is a cvprofiles-style admission of outcome measures: a documented filter on how simulated Y<sub>T</sub> is scored. It is not a vendor product, and it is not a licence to edit M* after seeing estimates."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "7. Two axes of set-valuedness"
+    },
+    {
+      "type": "paragraph",
+      "text": "The applied project eventually composes two sources of incompleteness. They are not the same axis, and folding them into one interval loses the diagnosis. A figure in prose:"
+    },
+    {
+      "type": "paragraph",
+      "text": "Draw a rectangle. The horizontal axis is the space of calibrations C. History matching, using anchors z, moments M(c), discrepancy-augmented V, and threshold τ, retains a subset NROY ⊂ C and discards the rest. A named functional θ<sub>2</sub>(c), computed from the kernel’s own Y<sub>T</sub>, then has image"
+    },
+    {
+      "type": "display",
+      "text": "Θ<sub>hm</sub>  ≡  { θ<sub>2</sub>(c) : c ∈ NROY }."
+    },
+    {
+      "type": "paragraph",
+      "text": "That is axis 1: which worlds. Width along this axis is a statement about calibration. It answers: given the anchors and the implausibility rule, which values of the targeting contrast are not ruled out. Lecture 1 defined the rule; Lecture 2 located Θ<sub>hm</sub> as an analogy of reporting logic, not as a theorem that the image is a Manski identified set."
+    },
+    {
+      "type": "paragraph",
+      "text": "The vertical axis is the space of scoring rules M. Admission retains M* ⊂ M and discards the rest. At a single frozen world c<sub>0</sub> — in the project, a median-implausibility survivor, not yet realized, because waves have not been run — the same functional, now scored by m, has image Θ<sub>cv</sub> as in Section 6. That is axis 2: which operationalizations. Width along this axis is a statement about measurement. It answers: given c<sub>0</sub>, which values of the targeting contrast arise from admissible ways of scoring Y<sub>T</sub>."
+    },
+    {
+      "type": "paragraph",
+      "text": "The rectangle has cells (c, m). History matching slices vertically, keeping a band of c and using one privileged score (the kernel’s Y<sub>T</sub>) to form Θ<sub>hm</sub>. Admission slices horizontally, keeping a band of m and using one privileged world (c<sub>0</sub>) to form Θ<sub>cv</sub>. Two mistakes are then available, and both are diagnostic losses."
+    },
+    {
+      "type": "bullet",
+      "items": [
+        "<b>Collapse the rectangle to an interval.</b> Report only [min, max] of θ<sub>2</sub> over the retained cells. The number may be honest as a range, and it erases whether the width came from worlds or from scores. A policymaker who should be told “the kernel is not pinned down” is instead told the same thing as one who should be told “the outcome was scored two admissible ways.” Those are different repairs.",
+        "<b>Use admission to re-filter NROY.</b> Drop calibrations because they look different under a rejected measure, or keep them because a favourite measure made them look stable. That folds axis 2 into axis 1 and quietly changes what NROY means. The procedure in METHODOLOGY.md §8 does not do this."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "A third, future object — the image of θ<sub>2</sub> over NROY × M* — would be a product, not a collapse. Lecture 5 is the natural place to compose the axes. This lecture only names them. No numerical image is reported, because no wave has been run and no c<sub>0</sub> exists yet as a survivor."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Partial identification already knows about measurement error"
+    },
+    {
+      "type": "paragraph",
+      "text": "It would be a mistake to say that the partial-identification literature never handles measurement error. It does; it handles it as a problem of incomplete observation of a <i>named</i> variable. Horowitz and Manski (1995) bound functionals of a law when data are contaminated or corrupted: with positive probability one observes a draw from a wrong distribution rather than from the distribution of interest. Manski (2003, ch. 4) collects contaminated outcomes as a mixture problem. Klepper and Leamer (1984) characterize the set of coefficients consistent with a linear regression when every variable is measured with classical error; the feasible set is the convex hull of reverse regressions when those regressions lie in the same orthant, and is otherwise unbounded without further bounds on error variances. Bound, Brown, and Mathiowetz (2001) themselves treat bounds as the constructive response when classical corrections do not apply."
+    },
+    {
+      "type": "paragraph",
+      "text": "Those results take Y* as given and ask what can be said about functionals of Y* when the observer sees something else. They are axis-1 relatives: incompleteness in the law of a named attribute. They are not an admission rule. An admission rule asks a prior question: which columns are allowed to count as operationalizations of Y* at all. Cronbach and Meehl’s network sits before Horowitz and Manski’s mixture. Using PI tools on a contaminated score without first deciding whether the score is admissible is possible, and it answers a different question — what can be said about the law of that score — than the one the estimand named."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "8. Project objects (a light hook)"
+    },
+    {
+      "type": "paragraph",
+      "text": "METHODOLOGY.md §8 freezes the measurement layer as follows. True outcome Y<sub>T</sub> is generated by the kernel at a single world c<sub>0</sub>. Three scoring rules are defined; one is excluded by the correlation restriction; two remain. No wave has been run. No survivor exists, so c<sub>0</sub> is not yet a median-implausibility point of a realized NROY set. Nothing below is a result."
+    },
+    {
+      "type": "table",
+      "caption": "Table 3. Frozen measurement layer (METHODOLOGY.md §8). Θ<sub>cv</sub> is the image of θ<sub>2</sub> over M* at c<sub>0</sub>, not an image over NROY.",
+      "header": true,
+      "rows": [
+        [
+          "Rule",
+          "Score",
+          "Status",
+          "Role"
+        ],
+        [
+          "m<sub>1</sub> oracle",
+          "s = Y<sub>T</sub>",
+          "in M*",
+          "Positive control; planner sees truth"
+        ],
+        [
+          "m<sub>2</sub> survey",
+          "s = clip(Y<sub>T</sub> + N(0, 0.15<sup>2</sup>))",
+          "in M*",
+          "Admissible classical-noise operationalization"
+        ],
+        [
+          "m<sub>3</sub> bad item",
+          "s = clip(0.5 Y<sub>T</sub> + 0.5 x3 + N(0, 0.10<sup>2</sup>))",
+          "excluded if |corr(s, x3)| &gt; 0.5",
+          "Loads on treatment-channel covariate x3"
+        ],
+        [
+          "M*",
+          "{m<sub>1</sub>, m<sub>2</sub>}",
+          "frozen",
+          "Admitted measures"
+        ],
+        [
+          "Θ<sub>cv</sub>",
+          "{θ<sub>2</sub>(c<sub>0</sub>; m) : m ∈ M*}",
+          "not computed",
+          "Axis 2 at a single world"
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The layer is minimal on purpose. It does not claim to exhaust construct validity for “preventive behavior.” It does not compare M* to a World Bank immunization series as a criterion. It disciplines how the simulated outcome is scored, so that a later diagnostic (Lecture 4) which consumes s from each m ∈ M* is consuming admitted scores. The freeze date in METHODOLOGY.md §10 forbids new measures after that date. Adding a cleverer item because Θ<sub>cv</sub> looked ugly would be Order S."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "9. What this is not"
+    },
+    {
+      "type": "callout",
+      "title": "This is not a general test that ‘the proxy–latent relationship broke down’",
+      "text": "The admission rule is one pre-declared, auditable restriction: a measure that loads too heavily on x3 is not admitted as a score of Y<sub>T</sub>. It is not a specification test of a measurement model, not a Hausman comparison of noisy and clean slopes, not a validation study in the Bound–Brown–Mathiowetz sense, and not a nomological-network investigation of immunization as a construct. Failing |corr(s, x3)| ≤ 0.5 means m<sub>3</sub> is out. Passing it, for m<sub>2</sub>, means m<sub>2</sub> is in. Neither result licenses the sentence “the proxy measures the latent.” Neither result speaks to whether DPT immunization, as published by the World Bank, is a valid construct for preventive behavior in the kernel. The restriction disciplines how the <i>simulated</i> outcome is scored. That is the whole of its claim."
+    },
+    {
+      "type": "paragraph",
+      "text": "A short list of neighbouring claims that this lecture is not making:"
+    },
+    {
+      "type": "bullet",
+      "items": [
+        "<b>Not a claim that history matching assumes perfect measurements.</b> Section 1 and the first callout said the opposite. Discrepancy is already in V.",
+        "<b>Not a filter on simulations or on NROY points.</b> M* is a set of scoring rules. Applying it to discard calibrations would be a different method.",
+        "<b>Not a substitute for partial identification of measurement-error models.</b> Section 7 located that literature as a side literature that takes Y* as named. Admission is prior.",
+        "<b>Not a result.</b> Waves have not been run. Θ<sub>cv</sub> has not been computed. Table 1 is arithmetic on invented numbers."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The operational summary is then small. Name Y, not only θ. Write down the scoring rules that will be allowed to stand in for Y, and the discriminant checks they must pass, before seeing estimates. If a measure loads on a treatment-channel covariate, do not call the loading classical noise. Keep the two axes — worlds, operationalizations — visible as two axes. And do not describe a pre-declared admission of simulated scores as a validation of the real-world construct the anchors came from."
+    },
+    {
+      "type": "pagebreak"
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "References"
+    },
+    {
+      "type": "ref",
+      "text": "Aigner, Dennis J. 1973. “Regression with a Binary Independent Variable Subject to Errors of Observation.” <i>Journal of Econometrics</i> 1(1): 49–59."
+    },
+    {
+      "type": "ref",
+      "text": "Aigner, Dennis J., Cheng Hsiao, Arie Kapteyn, and Tom Wansbeek. 1984. “Latent Variable Models in Econometrics.” In <i>Handbook of Econometrics</i>, vol. 2, edited by Zvi Griliches and Michael D. Intriligator, 1321–1393. Amsterdam: North-Holland."
+    },
+    {
+      "type": "ref",
+      "text": "Bound, John, Charles Brown, and Nancy Mathiowetz. 2001. “Measurement Error in Survey Data.” In <i>Handbook of Econometrics</i>, vol. 5, edited by James J. Heckman and Edward Leamer, 3705–3843. Amsterdam: Elsevier."
+    },
+    {
+      "type": "ref",
+      "text": "Cronbach, Lee J., and Paul E. Meehl. 1955. “Construct Validity in Psychological Tests.” <i>Psychological Bulletin</i> 52(4): 281–302."
+    },
+    {
+      "type": "ref",
+      "text": "Griliches, Zvi. 1974. “Errors in Variables and Other Unobservables.” <i>Econometrica</i> 42(6): 971–998."
+    },
+    {
+      "type": "ref",
+      "text": "Griliches, Zvi. 1986. “Economic Data Issues.” In <i>Handbook of Econometrics</i>, vol. 3, edited by Zvi Griliches and Michael D. Intriligator, 1465–1514. Amsterdam: North-Holland."
+    },
+    {
+      "type": "ref",
+      "text": "Hausman, Jerry. 2001. “Mismeasured Variables in Econometric Analysis: Problems from the Right and Problems from the Left.” <i>Journal of Economic Perspectives</i> 15(4): 57–67."
+    },
+    {
+      "type": "ref",
+      "text": "Horowitz, Joel L., and Charles F. Manski. 1995. “Identification and Robustness with Contaminated and Corrupted Data.” <i>Econometrica</i> 63(2): 281–302."
+    },
+    {
+      "type": "ref",
+      "text": "Hu, Yingyao. 2008. “Identification and Estimation of Nonlinear Models with Misclassification Error Using Instrumental Variables: A General Solution.” <i>Journal of Econometrics</i> 144(1): 27–61."
+    },
+    {
+      "type": "ref",
+      "text": "Kennedy, Marc C., and Anthony O’Hagan. 2001. “Bayesian Calibration of Computer Models.” <i>Journal of the Royal Statistical Society, Series B</i> 63(3): 425–464."
+    },
+    {
+      "type": "ref",
+      "text": "Klepper, Steven, and Edward E. Leamer. 1984. “Consistent Sets of Estimates for Regressions with Errors in All Variables.” <i>Econometrica</i> 52(1): 163–184."
+    },
+    {
+      "type": "ref",
+      "text": "Mahajan, Aprajit. 2006. “Identification and Estimation of Regression Models with Misclassification.” <i>Econometrica</i> 74(3): 631–665."
+    },
+    {
+      "type": "ref",
+      "text": "Manski, Charles F. 2003. <i>Partial Identification of Probability Distributions</i>. New York: Springer."
+    },
+    {
+      "type": "ref",
+      "text": "Messick, Samuel. 1995. “Validity of Psychological Assessment: Validation of Inferences from Persons’ Responses and Performances as Scientific Inquiry into Score Meaning.” <i>American Psychologist</i> 50(9): 741–749."
+    }
+  ]
+}

@@ -1,0 +1,530 @@
+{
+  "lecture_number": 2,
+  "title": "Partial Identification",
+  "subtitle": "Worst-case bounds as the starting point of analysis",
+  "running_header": "Lecture 2 · Partial Identification",
+  "author": "ECN 593 short course notes (study draft, not a frozen specification)",
+  "date": "August 2026",
+  "abstract": "Partial identification treats identification as a set-valued mapping from the distribution of observables and the maintained assumptions into the parameter space, not as a binary of identified versus not identified. The lecture develops that idea in Manski's program: worst-case bounds as the starting point of analysis, the Law of Decreasing Credibility, and the identified set as a population object. A numerical example computes the no-assumption bound on the average treatment effect for a binary outcome and shows how monotone treatment selection shrinks it. Two distinctions are insisted upon: the identified set is not a confidence set, and it is not a distribution over effects. A preview of the applied project treats the image of a policy functional over not-ruled-out calibrations as an analogy of reporting logic, not as a theorem that the object has the exact mathematical properties of a Manski identified set.",
+  "elements": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "1. Identification as a binary, and why that topology is wrong"
+    },
+    {
+      "type": "paragraph",
+      "text": "Mid-century econometrics inherited from the Cowles Commission a sharp, essentially binary vocabulary for identification. Koopmans (1949) separated statistical inference from observations to the distribution of the data from a second step: inference from that distribution to the parameters of structural equations. A parameter was <i>identifiable</i> within a model if it was uniquely determined by the distribution of observables; otherwise it was not. Rank and order conditions, exclusion restrictions, and later parametric selection corrections were all technologies for crossing the line from the second category into the first."
+    },
+    {
+      "type": "paragraph",
+      "text": "That binary is the wrong topology. Between a singleton and the whole parameter space there is a continuum of informative sets. An assumption menu that fails to point-identify θ can still exclude large regions of the parameter space. Treating every failure of uniqueness as the same kind of failure — as \"not identified,\" hence as an invitation to add restrictions until uniqueness is restored — throws away exactly the information that the data plus the remaining credible assumptions contain. Tamer (2010) states the methodological point directly: identification maps prior assumptions and the data to information about a parameter, and that mapping \"should not result in a binary answer that consists of whether the parameter is point identified.\""
+    },
+    {
+      "type": "paragraph",
+      "text": "A distant ancestor, not yet using modern language, is Frisch's (1934) confluence analysis. When several linear relations hold simultaneously, ordinary regression need not recover a unique coefficient vector; the observables are compatible with a family of complete regression systems. The later Cowles apparatus converted that observation into conditions for uniqueness. The partial-identification program converts it back into a research object: characterize the set."
+    },
+    {
+      "type": "paragraph",
+      "text": "Two consequences follow, and they organize the rest of the lecture. First, the scientifically interesting question is not \"is θ identified?\" but \"what set of values of θ is consistent with the distribution of observables and the assumptions we are willing to maintain?\" Second, moving from a larger set to a smaller one is not costless: it is purchased with assumptions, and assumptions have a credibility price."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "2. Manski's program and the Law of Decreasing Credibility"
+    },
+    {
+      "type": "paragraph",
+      "text": "Charles Manski's research from the late 1980s onward is the source of the modern nonparametric language. <i>Anatomy of the Selection Problem</i> (Manski 1989) considers estimation of a regression E[y | x] when (y, x) is sampled randomly but y is observed only selectively. The sampling process identifies E[y | x, observed] and the observation probability; it does not identify E[y | x, unobserved], and therefore does not identify E[y | x]. The researcher's problem is to find prior restrictions that, combined with the data, identify the regression — or, short of that, bound it. One restriction studied there, and then novel, is a bound on the support of y. A bounded support implies a bound on the missing conditional mean and hence a bound on E[y | x]. The other restriction, already much studied, is a separability restriction from a latent-variable selection model."
+    },
+    {
+      "type": "paragraph",
+      "text": "The companion Papers and Proceedings note (Manski 1990) carries the same logic to treatment effects. Each person has a pair of potential outcomes (Y(1), Y(0)); a binary treatment D reveals Y = D Y(1) + (1 − D) Y(0). The sampling process identifies the distribution of (Y, D), hence E[Y | D = 1] and E[Y | D = 0]. It does not identify E[Y(1) | D = 0] or E[Y(0) | D = 1]. If outcomes are bounded, the unidentified conditional means nevertheless lie in a known interval, and the average treatment effect"
+    },
+    {
+      "type": "display",
+      "text": "θ ≡ E[Y(1) − Y(0)] = E[Y(1)] − E[Y(0)]"
+    },
+    {
+      "type": "paragraph",
+      "text": "is therefore confined to a closed interval. That interval is a population object: it is a property of P(Y, D) and of the support restriction, not of a sample. Section 5 computes it in arithmetic."
+    },
+    {
+      "type": "paragraph",
+      "text": "The 2003 monograph <i>Partial Identification of Probability Distributions</i> collects the program. Prediction with missing outcomes, contaminated sampling, ecological inference, response-based sampling, and treatment response are all treated by the same path: first ask what the sampling process alone identifies; then ask how the (set-valued) identification region shrinks when further assumptions are imposed. The 2007 book <i>Identification for Prediction and Decision</i> embeds the same logic in prediction and treatment choice, and states in its introduction the methodological rule that the 2003 book had placed on its first page."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "The Law of Decreasing Credibility"
+    },
+    {
+      "type": "paragraph",
+      "text": "Manski (2003, p. 1) names the rule as follows."
+    },
+    {
+      "type": "callout",
+      "title": "Law of Decreasing Credibility",
+      "text": "The credibility of inference decreases with the strength of the assumptions maintained. Stronger assumptions yield inferences that may be more powerful but less credible. Statistical theory cannot resolve the dilemma, but it can make the tradeoff explicit by reporting what is identified under a menu of assumptions of increasing strength."
+    },
+    {
+      "type": "paragraph",
+      "text": "Worst-case bounds — the identification region using the data and a support restriction, and nothing else — are therefore the <i>starting</i> point of analysis, not a confession that identification has failed. They are what researchers who disagree about selection, exclusion restrictions, or parametric error distributions can still agree on. Point identification is a possible destination, reached only by adding assumptions that some readers will not accept. Reporting only the destination conceals the price."
+    },
+    {
+      "type": "paragraph",
+      "text": "The contrast with point-identifying selection corrections is deliberate. Heckman (1979) recasts selection bias as an omitted-variable problem and gives a two-stage estimator that, under a latent-index selection equation and jointly normal unobservables, point-identifies the outcome regression. Those distributional and index restrictions are powerful. They are also nonrefutable from the observed (Y, D, X) alone once the model is flexible enough, and they are the sort of assumption the Law warns against treating as costless. Partial identification does not prohibit them. It insists that they be entered on the menu as optional, and that the no-assumption bound be shown first."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "3. The identified set as a population object"
+    },
+    {
+      "type": "paragraph",
+      "text": "Fix a sampling process that, in the population, generates a distribution P of observables. Fix a maintained assumption A — a restriction on the joint distribution of observables and unobservables (potential outcomes, latent indices, structural disturbances). Let Q(P, A) be the set of joint distributions Q of the complete data that (i) induce the observed P on the observables and (ii) satisfy A. Let θ be a functional of Q (a mean, a treatment effect, a counterfactual choice probability, a structural parameter)."
+    },
+    {
+      "type": "paragraph",
+      "text": "The <i>identified set</i> for θ is"
+    },
+    {
+      "type": "display",
+      "text": "Θ(P, A) ≡ { θ(Q) : Q in Q(P, A) }."
+    },
+    {
+      "type": "paragraph",
+      "text": "Three properties of this definition are easy to miss and expensive to miss."
+    },
+    {
+      "type": "enum",
+      "items": [
+        "<b>It is a population object.</b> P is the distribution of observables in the population, not a sample analogue. Finite-sample uncertainty is a different problem, taken up in the next section.",
+        "<b>It is defined relative to A.</b> Changing the assumption changes the set. Θ(P, A′) is contained in Θ(P, A) whenever A′ is stronger than A. The inclusion is the geometry of the Law of Decreasing Credibility.",
+        "<b>Observational equivalence is the primitive.</b> Two values θ and θ′ are not distinguished by (P, A) if there exist Q, Q′ in Q(P, A) with θ(Q) = θ and θ(Q′) = θ′. The identified set is the set of such undistinguished values."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "When Θ(P, A) is a singleton, θ is <i>point-identified</i> under A. When Θ(P, A) equals the whole logically possible range of θ (for a binary-outcome ATE, the interval [−1, 1]), the data and A are uninformative. Partial identification is the intermediate case: Θ(P, A) is a proper subset of the logical range, and is not a singleton."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Sharp sets and outer sets"
+    },
+    {
+      "type": "paragraph",
+      "text": "A reported set Θout is an <i>outer set</i> (or outer bound) for θ if Θ(P, A) is contained in Θout. Outer sets are valid: they do not exclude any observationally equivalent value. They are not tight. A reported set is <i>sharp</i> if it equals Θ(P, A). Sharpness is a claim about the mapping (P, A) into Θ, not about sampling. In the binary-outcome example of Section 5, the interval obtained from the law of total probability and the support {0, 1} is sharp: every point in the interval is attained by some joint distribution of (Y(1), Y(0), D) that rationalizes the observed P(Y, D)."
+    },
+    {
+      "type": "paragraph",
+      "text": "At survey level, a large subsequent literature characterizes identified sets using random-set theory. Molchanov and Molinari (2018) and Molinari (2020) treat the collection of random variables consistent with the data and the maintained assumptions as a random closed set; features of θ are then identified as features of that random set (Aumann expectations, support functions, selections). The organizing idea is the one already in the definition above: incompleteness lives in a set of feasible complete-data laws, and Θ is the image of a functional on that set. This lecture uses only that idea."
+    },
+    {
+      "type": "callout",
+      "title": "Identified set ≠ confidence set",
+      "text": "The identified set Θ(P, A) answers a population question: which values of θ are observationally equivalent, given the distribution of observables and the maintained assumptions? A confidence set answers a sampling question: which values of a (possibly set-valued) target would a procedure cover, with stated probability, in repeated samples? The first object does not shrink with n; if P is known, Θ(P, A) is known. The second object does shrink with n, and its coverage statement is about a random set constructed from the sample. Conflating them produces two opposite errors. One is to treat a wide identified set as if it were merely a noisy estimate, and to wait for a larger sample to collapse it — it will not. The other is to treat a confidence interval around a point-identified estimator as if it reported the identifying content of the assumptions. Tamer (2010) reviews inference for both the identified set and for parameters inside it; those procedures presuppose that one has first named the population object."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "4. What partial identification takes as already well-defined"
+    },
+    {
+      "type": "paragraph",
+      "text": "The apparatus above is silent on some questions that dominate adjacent literatures, and it is worth saying so before computing a bound."
+    },
+    {
+      "type": "bullet",
+      "items": [
+        "<b>The outcome random variable Y is already defined.</b> Partial identification takes as given a measurable map from people (or firms, or markets) to an outcome space. Construct validity — whether the measured Y is the Y in the scientific claim — is not a native PI question. If the researcher is unsure which operationalization of \"preventive behavior\" or \"welfare\" is admissible, that is a measurement problem, to be treated as a second source of incompleteness, not as a feature of Manski bounds on a well-named Y.",
+        "<b>The treatment D and the estimand θ are already named.</b> The ATE, a quantile treatment effect, a counterfactual choice probability, a structural elasticity: each is a functional of a complete-data law. PI tells you what the observables plus A can say about that functional. It does not choose the functional.",
+        "<b>Unobserved confounding is handled by refusal, not by a graph.</b> The default in the Manski program is that (Y(1), Y(0)) may be arbitrarily dependent on D. Point-identifying exclusion restrictions, latent-index selection equations, and conditional independence assumptions are optional additions to A. They are not encoded as missing arrows on a DAG, and they are not the starting point. The starting point is the bound that does not use them."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The practical instruction is narrow. Before asking what is identified, write down Y, D, and θ in population language. If you cannot, you are not yet in a partial-identification problem; you are in a measurement or estimand problem."
+    },
+    {
+      "type": "pagebreak"
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "5. Worked example: no-assumption bounds on a binary ATE"
+    },
+    {
+      "type": "paragraph",
+      "text": "The following numbers are invented for arithmetic transparency. They are not estimates from a study. Let Y take values in {0, 1} — a binary outcome such as employment, take-up, or survival — and let D take values in {0, 1}, a binary treatment. The population distribution of observables is fully specified by three numbers."
+    },
+    {
+      "type": "table",
+      "caption": "Table 1. Invented population frequencies. Y is binary, so E[Y | D = d] = P(Y = 1 | D = d).",
+      "header": true,
+      "rows": [
+        [
+          "Quantity",
+          "Value"
+        ],
+        [
+          "P(D = 1)",
+          "0.40"
+        ],
+        [
+          "P(D = 0)",
+          "0.60"
+        ],
+        [
+          "P(Y = 1 | D = 1)",
+          "0.70"
+        ],
+        [
+          "P(Y = 1 | D = 0)",
+          "0.30"
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The implied joint probabilities are P(Y = 1, D = 1) = 0.28, P(Y = 1, D = 0) = 0.18, P(Y = 0, D = 1) = 0.12, and P(Y = 0, D = 0) = 0.42. The observed outcome mean is E[Y] = 0.46. The naive contrast is"
+    },
+    {
+      "type": "display",
+      "text": "E[Y | D = 1] − E[Y | D = 0] = 0.70 − 0.30 = 0.40."
+    },
+    {
+      "type": "paragraph",
+      "text": "That contrast equals the ATE if and only if mean potential outcomes do not differ by treatment status — that is, if E[Y(1) | D = 1] = E[Y(1) | D = 0] and E[Y(0) | D = 1] = E[Y(0) | D = 0]. The no-assumption analysis does not impose that."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 1: law of total probability"
+    },
+    {
+      "type": "paragraph",
+      "text": "Write each potential-outcome mean as a mixture of an identified piece and an unidentified piece:"
+    },
+    {
+      "type": "display",
+      "text": "E[Y(1)] = E[Y | D = 1] P(D = 1) + E[Y(1) | D = 0] P(D = 0)"
+    },
+    {
+      "type": "display",
+      "text": "E[Y(0)] = E[Y | D = 0] P(D = 0) + E[Y(0) | D = 1] P(D = 1)."
+    },
+    {
+      "type": "paragraph",
+      "text": "The first term on each right-hand side is identified by P(Y, D). The second term is not: Y(1) is unobserved when D = 0, and Y(0) is unobserved when D = 1."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 2: support restriction, and nothing else"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because Y is binary, Y(1), Y(0) take values in {0, 1}, so every unidentified conditional mean lies in [0, 1]. Substituting the Table 1 numbers,"
+    },
+    {
+      "type": "display",
+      "text": "E[Y(1)] in [0.70 · 0.40 + 0 · 0.60,  0.70 · 0.40 + 1 · 0.60] = [0.28, 0.88]"
+    },
+    {
+      "type": "display",
+      "text": "E[Y(0)] in [0.30 · 0.60 + 0 · 0.40,  0.30 · 0.60 + 1 · 0.40] = [0.18, 0.58]."
+    },
+    {
+      "type": "paragraph",
+      "text": "The lower bound on E[Y(1)] puts every untreated person at Y(1) = 0; the upper bound puts every untreated person at Y(1) = 1. Symmetric statements apply to E[Y(0)] among the treated."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 3: subtract, using the worst case"
+    },
+    {
+      "type": "paragraph",
+      "text": "The ATE is a difference. The lower bound on a difference is the lower bound on the first term minus the upper bound on the second; the upper bound reverses that."
+    },
+    {
+      "type": "display",
+      "text": "θ ≥ 0.28 − 0.58 = −0.30"
+    },
+    {
+      "type": "display",
+      "text": "θ ≤ 0.88 − 0.18 =  0.70"
+    },
+    {
+      "type": "paragraph",
+      "text": "So under the data in Table 1 and the support restriction that Y is binary alone,"
+    },
+    {
+      "type": "display",
+      "text": "θ in [−0.30, 0.70]."
+    },
+    {
+      "type": "paragraph",
+      "text": "The interval has width 1.00, which equals P(D = 0) + P(D = 1) and is the general width of the no-assumption ATE bound when Y is binary. It always contains the naive contrast 0.40, and it always contains 0. Containing 0 is not a defect: without assumptions on selection, the data cannot rule out a zero mean effect, nor a modest negative one, nor a large positive one. The bound has ruled out ATE values below −0.30 and above 0.70. That is information. It is the starting point."
+    },
+    {
+      "type": "paragraph",
+      "text": "Every value in [−0.30, 0.70] is attainable. The lower endpoint is attained if Y(1) = 0 for all untreated persons and Y(0) = 1 for all treated persons; the upper endpoint is attained if those assignments are reversed. Intermediate values are attained by intermediate assignments of the missing potential outcomes. The interval is therefore sharp."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "6. One credible assumption, and how the set shrinks"
+    },
+    {
+      "type": "paragraph",
+      "text": "Now add an assumption, stated in words before any algebra."
+    },
+    {
+      "type": "callout",
+      "title": "Monotone treatment selection (MTS)",
+      "text": "Persons who receive treatment have weakly higher mean potential outcomes, at each treatment value t, than persons who do not. Formally, E[Y(t) | D = 1] ≥ E[Y(t) | D = 0] for t in {0, 1}. Selection into treatment is positively associated with the <i>levels</i> of both potential outcomes. The assumption says nothing, by itself, about the gain Y(1) − Y(0)."
+    },
+    {
+      "type": "paragraph",
+      "text": "MTS is the special case of Manski and Pepper's (2000) monotone instrumental variable in which the instrument is the treatment indicator itself. It is weaker than mean independence of potential outcomes from D, and it is often more plausible: if treatment is taken by those who would do better anyway, MTS holds even though the naive contrast is a contaminated measure of the gain."
+    },
+    {
+      "type": "paragraph",
+      "text": "Under MTS the unidentified pieces are no longer free in [0, 1]. Because E[Y(1) | D = 1] = 0.70, MTS requires E[Y(1) | D = 0] ≤ 0.70; the support still requires it to be at least 0. Because E[Y(0) | D = 0] = 0.30, MTS requires E[Y(0) | D = 1] ≥ 0.30; the support still requires it to be at most 1. Therefore"
+    },
+    {
+      "type": "display",
+      "text": "E[Y(1)] in [0.28, 0.70],    E[Y(0)] in [0.30, 0.58]"
+    },
+    {
+      "type": "display",
+      "text": "θ in [0.28 − 0.58,  0.70 − 0.30] = [−0.30, 0.40]."
+    },
+    {
+      "type": "paragraph",
+      "text": "MTS leaves the lower bound unchanged and cuts the upper bound from 0.70 to 0.40. The lower bound does not move because the configuration that produced it — Y(1) = 0 among the untreated, Y(0) = 1 among the treated — still satisfies MTS: 0.70 ≥ 0 and 1 ≥ 0.30. The upper bound does move because the configuration that produced 0.70 assigned Y(1) = 1 to the untreated, which would violate E[Y(1) | D = 1] ≥ E[Y(1) | D = 0]. The naive contrast is now the <i>upper</i> endpoint. Under MTS, 0.40 is an upper bound on the ATE, not an estimate of it."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "A second assumption, stacked"
+    },
+    {
+      "type": "paragraph",
+      "text": "A different restriction, monotone treatment response (MTR), was studied in Manski (1997). In words: treatment does not hurt anyone. Formally, Y(1) ≥ Y(0) almost surely. MTR alone implies θ ≥ 0 and does not improve the no-assumption upper bound, so"
+    },
+    {
+      "type": "display",
+      "text": "θ in [0, 0.70]    under MTR alone."
+    },
+    {
+      "type": "paragraph",
+      "text": "Manski and Pepper (2000) combine MTS with MTR. The two restrictions together give"
+    },
+    {
+      "type": "display",
+      "text": "E[Y(1)] in [E[Y], E[Y | D = 1]] = [0.46, 0.70]"
+    },
+    {
+      "type": "display",
+      "text": "E[Y(0)] in [E[Y | D = 0], E[Y]] = [0.30, 0.46]"
+    },
+    {
+      "type": "display",
+      "text": "θ in [0, 0.40]    under MTR and MTS."
+    },
+    {
+      "type": "paragraph",
+      "text": "The lower bound is now 0 (from MTR); the upper bound is the naive contrast (from MTS). Table 2 records the menu."
+    },
+    {
+      "type": "table",
+      "caption": "Table 2. Identified sets for the ATE under nested assumptions, using Table 1. Each row is a population statement about Θ(P, A), not a confidence interval.",
+      "header": true,
+      "rows": [
+        [
+          "Maintained assumption A",
+          "Θ(P, A) for the ATE"
+        ],
+        [
+          "Support Y binary only",
+          "[−0.30, 0.70]"
+        ],
+        [
+          "MTS",
+          "[−0.30, 0.40]"
+        ],
+        [
+          "MTR",
+          "[0, 0.70]"
+        ],
+        [
+          "MTR and MTS",
+          "[0, 0.40]"
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Read Table 2 through the Law. MTR and MTS together are more informative than either alone, and much more informative than the data alone. They are also more expensive in credibility. A reader who accepts that treatment does not hurt and that selection is positively associated with levels will report [0, 0.40]. A reader who accepts only the support restriction will report [−0.30, 0.70]. The honest paper reports both, and says which assumption is doing the work."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "7. Other partial-identification technologies"
+    },
+    {
+      "type": "paragraph",
+      "text": "The Manski program is not the only source of set-valued identification, and it is not the technology the applied project will compute. Two other families should be on the map, at survey level."
+    },
+    {
+      "type": "paragraph",
+      "text": "<b>Incomplete games.</b> In a complete-information entry game, multiple Nash equilibria can be compatible with the same payoffs. If the researcher is unwilling to assume an equilibrium selection rule, the model maps parameters to a <i>set</i> of choice probabilities, not to a single probability. Ciliberto and Tamer (2009) estimate airline entry without selection assumptions; the identified feature is the set of payoff parameters such that the model's predicted choice-probability sets are consistent with the empirical choice probabilities. Incompleteness here comes from the solution concept, not from missing counterfactual outcomes."
+    },
+    {
+      "type": "paragraph",
+      "text": "<b>Moment inequalities.</b> Optimizing behavior, whether single-agent or as a best response, often yields inequality restrictions on expected payoffs rather than equalities. Pakes, Porter, Ho, and Ishii (2015) give conditions under which those inequalities can be used for estimation and inference, and they locate the exercise in the identified-set geometry of this lecture: the inequalities characterize a set of parameters compatible with observed choices. This is a different PI technology from missing potential outcomes. The incompleteness comes from revealed-preference inequalities, not from Y(1) going unseen when D = 0."
+    },
+    {
+      "type": "paragraph",
+      "text": "What the three families share is the reporting logic. Name the assumption menu. Report the set of θ values still compatible with P and that menu. Do not replace the set by a point because a point is more convenient."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "8. Two sources of incompleteness"
+    },
+    {
+      "type": "paragraph",
+      "text": "The applied project will eventually compose two distinct sources of set-valuedness. This section names them and stops. It does not derive the composition (Lecture 5), and it does not report any numerical image from the simulator. No history-matching wave has been run."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "(A) Classic: missing counterfactuals"
+    },
+    {
+      "type": "paragraph",
+      "text": "In the treatment-response problem, the kernel of the complete-data law is itself incomplete as a description of observables: for each person, one of Y(1), Y(0) is missing. The identified set Θ(P, A) is the set of values of a functional (the ATE, a policy value) that some completion of the missing counterfactuals, consistent with A, can produce. Sections 5–6 are entirely this case. Heckman-style corrections, IV, and unconfoundedness are alternative ways of completing the missing piece until the functional is a singleton."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "(B) Preview: a complete kernel, an unpinned calibration"
+    },
+    {
+      "type": "paragraph",
+      "text": "The project's agent-based kernel is a complete data-generating process. Given a calibration c in the parameter box C, a treatment rule π, and simulation noise, the kernel produces a complete outcome path. There is no missing Y(1) inside a run. The incompleteness is elsewhere. External anchors z do not pin c to a point. History matching (Lecture 1) retains those c for which an implausibility statistic stays below a threshold,"
+    },
+    {
+      "type": "display",
+      "text": "I(c) = (z − M(c))′ V<sup>−1</sup> (z − M(c))  ≤  τ,"
+    },
+    {
+      "type": "paragraph",
+      "text": "and discards the rest. Let NROY denote the surviving, not-ruled-out calibrations. A named policy functional θ(c) — in the project, a targeting contrast — then has image"
+    },
+    {
+      "type": "display",
+      "text": "Θhm  ≡  { θ(c) : c in NROY }."
+    },
+    {
+      "type": "paragraph",
+      "text": "Θhm is set-valued because the anchors plus the implausibility rule do not reduce C to a singleton, not because potential outcomes are missing inside the kernel."
+    },
+    {
+      "type": "callout",
+      "title": "An analogy of reporting logic, not a theorem",
+      "text": "It is useful to report Θhm the way one reports a Manski identified set: as the set of θ values not ruled out by the objects one is willing to maintain. It is not a theorem that Θhm has the exact mathematical properties of Θ(P, A). Three differences are already visible, and they are reasons to call Θhm a <i>not-ruled-out image</i> rather than an identified set. First, the retention rule is a threshold I(c) ≤ τ, not exact observational equivalence of c with a population P. Second, the matrix V folds sampling variation in the anchors and Monte Carlo error in M(c) into the ruling-out step, so the population/sample separation of Section 3 is not cleanly maintained. Third, V also contains an explicit model-discrepancy budget δ; discrepancy is not an object in the definition of Θ(P, A). Do not write \"Θhm is a Manski identified set.\" Write that it is reported in the same logical slot: the image of a named functional over the calibrations that have not been ruled out."
+    },
+    {
+      "type": "paragraph",
+      "text": "Source (A) and source (B) can be stacked later. They should not be conflated now. (A) is about missing pieces of a random vector for a fixed law. (B) is about a family of complete laws, indexed by c, only some of which survive a calibration filter."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "9. What this is not"
+    },
+    {
+      "type": "callout",
+      "title": "This is not a distribution over effects",
+      "text": "An identified set is a set of observationally equivalent values of θ. It is not a probability distribution over those values. Putting a uniform measure — or any other measure — on Θ(P, A) is an extra assumption, not a consequence of partial identification. Nothing in the data-plus-A problem has supplied that measure. The same refusal applies to history matching: the NROY set is not a posterior, and a uniform draw over surviving c is a computational device for tracing an image, not a credibility claim that every survivor is equally likely. If you need a distribution over θ, you must introduce one and defend it. The Manski program, and this project, decline to smuggle one in."
+    },
+    {
+      "type": "paragraph",
+      "text": "A second \"is not\" has already been stated and is worth repeating in closing. The identified set is not a confidence set. Width that comes from weak assumptions will not vanish with n. Width that comes from sampling will."
+    },
+    {
+      "type": "paragraph",
+      "text": "The operational summary for the rest of the short course is then small. Name Y, D, and θ. Report Θ under the weakest assumption menu you are willing to sign. If you tighten the menu, say which assumption did the tightening. If you pass from a Manski-style missing-counterfactual set to a not-ruled-out image of a simulator functional, say that you are changing objects, not invoking a theorem. And do not put a probability on the set unless you are prepared to argue for the measure."
+    },
+    {
+      "type": "pagebreak"
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "References"
+    },
+    {
+      "type": "ref",
+      "text": "Ciliberto, Federico, and Elie Tamer. 2009. \"Market Structure and Multiple Equilibria in Airline Markets.\" <i>Econometrica</i> 77(6): 1791–1828."
+    },
+    {
+      "type": "ref",
+      "text": "Frisch, Ragnar. 1934. <i>Statistical Confluence Analysis by Means of Complete Regression Systems</i>. Oslo: Universitetets Økonomiske Institutt."
+    },
+    {
+      "type": "ref",
+      "text": "Heckman, James J. 1979. \"Sample Selection Bias as a Specification Error.\" <i>Econometrica</i> 47(1): 153–161."
+    },
+    {
+      "type": "ref",
+      "text": "Koopmans, Tjalling C. 1949. \"Identification Problems in Economic Model Construction.\" <i>Econometrica</i> 17(2): 125–144."
+    },
+    {
+      "type": "ref",
+      "text": "Manski, Charles F. 1989. \"Anatomy of the Selection Problem.\" <i>Journal of Human Resources</i> 24(3): 343–360."
+    },
+    {
+      "type": "ref",
+      "text": "Manski, Charles F. 1990. \"Nonparametric Bounds on Treatment Effects.\" <i>American Economic Review</i> 80(2): 319–323."
+    },
+    {
+      "type": "ref",
+      "text": "Manski, Charles F. 1997. \"Monotone Treatment Response.\" <i>Econometrica</i> 65(6): 1311–1334."
+    },
+    {
+      "type": "ref",
+      "text": "Manski, Charles F. 2003. <i>Partial Identification of Probability Distributions</i>. New York: Springer."
+    },
+    {
+      "type": "ref",
+      "text": "Manski, Charles F. 2007. <i>Identification for Prediction and Decision</i>. Cambridge, MA: Harvard University Press."
+    },
+    {
+      "type": "ref",
+      "text": "Manski, Charles F., and John V. Pepper. 2000. \"Monotone Instrumental Variables: With an Application to the Returns to Schooling.\" <i>Econometrica</i> 68(4): 997–1010."
+    },
+    {
+      "type": "ref",
+      "text": "Molchanov, Ilya, and Francesca Molinari. 2018. <i>Random Sets in Econometrics</i>. Cambridge: Cambridge University Press."
+    },
+    {
+      "type": "ref",
+      "text": "Molinari, Francesca. 2020. \"Microeconometrics with Partial Identification.\" In <i>Handbook of Econometrics</i>, vol. 7A, 355–486. Elsevier."
+    },
+    {
+      "type": "ref",
+      "text": "Pakes, Ariel, Jack Porter, Kate Ho, and Joy Ishii. 2015. \"Moment Inequalities and Their Application.\" <i>Econometrica</i> 83(1): 315–334."
+    },
+    {
+      "type": "ref",
+      "text": "Tamer, Elie. 2010. \"Partial Identification in Econometrics.\" <i>Annual Review of Economics</i> 2: 167–195."
+    }
+  ]
+}

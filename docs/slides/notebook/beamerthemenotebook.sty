@@ -1,0 +1,88 @@
+% notebook — the study note stood up. Not a freeze. Not Madrid.
+% Sentences in Charter. Identifiers in Menlo. Math in STIX Two.
+% Color marks structure, never a verdict. No good/bad palette.
+\mode<presentation>
+
+\usefonttheme{professionalfonts}
+\usecolortheme{default}
+\useinnertheme{default}
+\useoutertheme{default}
+
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\RequirePackage{booktabs}
+\RequirePackage{amsmath}
+
+\setmainfont{Charter}[
+  BoldFont = Charter,
+  BoldFeatures = {Style=Bold},
+  ItalicFont = Charter,
+  ItalicFeatures = {Style=Italic},
+  BoldItalicFont = Charter,
+  BoldItalicFeatures = {Style=Bold Italic},
+]
+\setsansfont{Menlo}[Scale=0.92]
+\setmonofont{Menlo}[Scale=0.90]
+\setmathfont{STIX Two Math}
+
+\definecolor{ink}{HTML}{111111}
+\definecolor{rule}{HTML}{222222}
+\definecolor{muted}{HTML}{555555}
+\definecolor{wash}{HTML}{F4F4F4}
+
+\setbeamercolor{normal text}{fg=ink,bg=white}
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{frametitle}{fg=ink,bg=white}
+\setbeamercolor{title}{fg=ink,bg=white}
+\setbeamercolor{subtitle}{fg=muted,bg=white}
+\setbeamercolor{author}{fg=muted,bg=white}
+\setbeamercolor{date}{fg=muted,bg=white}
+\setbeamercolor{item}{fg=ink}
+\setbeamercolor{structure}{fg=ink}
+\setbeamercolor{block title}{fg=ink,bg=wash}
+\setbeamercolor{block body}{fg=ink,bg=wash}
+\setbeamercolor{alerted text}{fg=ink}
+
+\setbeamerfont{normal text}{family=\rmfamily,size=\normalsize}
+\setbeamerfont{frametitle}{family=\rmfamily,series=\bfseries,size=\large}
+\setbeamerfont{title}{family=\rmfamily,series=\bfseries,size=\Large}
+\setbeamerfont{subtitle}{family=\rmfamily,size=\normalsize}
+\setbeamerfont{author}{family=\ttfamily,size=\small}
+\setbeamerfont{date}{family=\ttfamily,size=\small}
+\setbeamerfont{footline}{family=\ttfamily,size=\scriptsize}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{itemize item}{\textcolor{muted}{--}}
+\setbeamertemplate{itemize subitem}{\textcolor{muted}{--}}
+
+\setbeamertemplate{frametitle}{%
+  \vspace{0.35em}%
+  \insertframetitle\par
+  \vspace{0.28em}%
+  {\color{rule}\hrule height 0.45pt}%
+  \vspace{0.55em}%
+}
+
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=2.6ex,dp=1.2ex,leftskip=1.6em,rightskip=1.6em]{footline}%
+      \usebeamerfont{footline}\color{muted}%
+      \insertshorttitle\hfill\insertframenumber%
+    \end{beamercolorbox}%
+  }%
+}
+
+% A refusal panel. Wash, not an alert block. Alert blocks grade.
+\newenvironment{stoppanel}{%
+  \begin{beamercolorbox}[wd=\textwidth,sep=0.7em,leftskip=0.2em]{block body}%
+  {\ttfamily\small\color{muted}stop}\par\vspace{0.35em}%
+}{%
+  \end{beamercolorbox}%
+}
+
+\newcommand{\obj}[1]{\texttt{#1}}
+\newcommand{\quiet}[1]{\textcolor{muted}{#1}}
+
+\mode<all>

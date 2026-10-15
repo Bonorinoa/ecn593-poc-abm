@@ -1,0 +1,493 @@
+{
+  "lecture_number": 5,
+  "title": "Composition",
+  "subtitle": "Literature gaps and the December value proposition",
+  "running_header": "Lecture 5 · Composition",
+  "author": "ECN 593 short course notes (study draft, not a frozen specification)",
+  "date": "August 2026",
+  "abstract": "Lectures 1–4 named four pieces: history matching and the not-ruled-out-yet (NROY) set C; the image of a named policy functional over C, reported with Manski's logic but not claimed as a Manski identified set; a measurement-admission set at a single world; and two one-world foils, one under the stable unit treatment value assumption (SUTVA) and one exposure-mapped. This lecture composes them. World Bank anchors filter the parameter box to C; maps send C to Θ<sub>hm</sub> and, if the draft amendment is accepted, Θ<sub>exp</sub>. Separately, one median-implausibility survivor c<sub>0</sub> generates a panel on which measurement admission and the foils produce I<sub>BCF</sub>, I<sub>E2</sub>, and Θ<sub>cv</sub>. Each one-world interval is judged against its own honest set. θ<sub>true</sub>(c<sub>0</sub>) exists only because we simulate. No history-matching wave has been run; no numerical overlay is a project result. The remaining sections locate the composition among existing traditions of inference from simulations, state the remaining wedge narrowly, and list December 2026 deliverables rather than findings. Pre-registration treats F-HONEST, a tight image, and an empty NROY as publishable outcomes.",
+  "elements": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "1. What the applied project is claiming"
+    },
+    {
+      "type": "paragraph",
+      "text": "The claim is a composition, not a new estimator and not a discovery that simulators can be equifinal. An agent-based kernel is a complete data-generating process: given a calibration c, an assignment rule π, and simulation noise, it produces a complete outcome path. There is no missing Y<sub>i</sub>(1) inside a run. External anchors z do not pin c to a point. History matching retains those c for which a joint implausibility statistic stays below a frozen threshold and discards the rest. The scientific object for policy is not the surviving set in parameter space. It is the image of a named causal estimand — here, policy contrasts under interference — on that set, together with a second image that records which measurements of the outcome are admissible, together with two one-world estimators that a referee will propose. The honest product is the set of still-possible values of the estimand. A point selected from the image is a selection. The interesting empirical story, if it appears, is that a modern one-world interval can sit inside that image and miss parts of it, including the planner's truth at the world on which the interval was computed. That story is not assumed. It is one of four pre-registered verdicts."
+    },
+    {
+      "type": "paragraph",
+      "text": "Two advisors from different traditions should be able to locate their tools in the pipeline after this lecture. Partial identification supplies the reporting logic. History matching supplies the filter in calibration space. Design-based interference inference and causal machine learning supply the foils. None of those literatures, taken alone, is the project. The project is the composition on a simulator where the planner's truth is known."
+    },
+    {
+      "type": "callout",
+      "title": "No waves have been run",
+      "text": "History-matching waves have not been run. No numerical NROY, no image of θ<sub>2</sub>, and no foil interval in this lecture is a project result. The three-world arithmetic in Section 5 is invented for pedagogy and is labelled as such. METHODOLOGY.md remains the specification; this lecture states what that specification is assembled to claim."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "2. The assembled pipeline"
+    },
+    {
+      "type": "paragraph",
+      "text": "Two legs share a kernel and a parameter box and then diverge. The first leg is a filter plus an image. The second is a single-world panel plus estimators. The overlay compares them. Write C<sub>0</sub> for the frozen parameter box of METHODOLOGY.md §2 (free coordinates α, β, γ, κ, σε, with η held fixed). Write z for the World Bank anchor vector of §5. Write M(c) for the moment map of §6. Implausibility is the one joint ellipsoidal restriction"
+    },
+    {
+      "type": "display",
+      "text": "I(c) = (z − M̂(c))′ V<sup>−1</sup> (z − M̂(c)),    V = diag(σ<sup>2</sup><sub>sampling</sub>(z) + σ<sup>2</sup><sub>MC</sub>(M̂) + δ<sup>2</sup>),"
+    },
+    {
+      "type": "paragraph",
+      "text": "with the discrepancy budget δ frozen at two percentage points on each coordinate and the threshold τ equal to the 0.95 quantile of χ<sup>2</sup><sub>4</sub>. A point survives a wave if I(c) ≤ τ. After three waves, NROY — denoted C in the table below — is the union of surviving points. It is the set of calibrations not ruled out yet. It is not the set of observationally valid calibrations. Observational equivalence is a population relation between complete-data laws; I(c) ≤ τ is a thresholded discrepancy that already folds sampling variation, Monte Carlo error, and an explicit model-discrepancy budget into V."
+    },
+    {
+      "type": "paragraph",
+      "text": "On C one evaluates named maps, not a distribution. The headline map is the hub-versus-control contrast θ<sub>2</sub>(c). If draft AMENDMENT-01 is accepted, a second map is the exposure-mapped spillover contrast δ<sub>spill</sub>(c) on the randomized arm. The images are"
+    },
+    {
+      "type": "display",
+      "text": "Θ<sub>hm</sub> ≡ { θ<sub>2</sub>(c) : c in C },     Θ<sub>exp</sub> ≡ { δ<sub>spill</sub>(c) : c in C }."
+    },
+    {
+      "type": "paragraph",
+      "text": "Each is a set. METHODOLOGY.md §7 reports Θ<sub>hm</sub> as the empirical range over a uniform sample of survivors. That draw is a computational device for tracing the image. It is not a credibility claim that every survivor is equally likely, and it does not put a uniform measure on NROY as a probability distribution over worlds."
+    },
+    {
+      "type": "paragraph",
+      "text": "The second leg does not consume C. It picks one pre-declared world c<sub>0</sub>, the median-implausibility survivor once waves exist, and simulates a panel. Measurement admission (Lecture 3; METHODOLOGY.md §8) retains the oracle and the survey operationalizations and excludes the bad item, giving a measurement image Θ<sub>cv</sub> of θ<sub>2</sub> at that single c<sub>0</sub>. Foil 1 fits a causal forest / Bayesian causal forest on the panel and returns an honest interval I<sub>BCF</sub> for a SUTVA functional. Foil 2, if the amendment is accepted, returns a design-based interval I<sub>E2</sub> for δ<sub>spill</sub> on the randomized arm. Neither foil is an estimator of the image. Each is an estimator on one world."
+    },
+    {
+      "type": "table",
+      "caption": "Table 1. Assembled pipeline. The two legs share the kernel and the box; only the first consumes the anchors as a filter. θ<sub>true</sub>(c<sub>0</sub>) is available because the panel is simulated, not because a field study reveals it.",
+      "header": true,
+      "rows": [
+        ["Stage", "Input", "Output", "Consumes C?"],
+        ["Anchors", "World Bank API v2", "z", "No"],
+        ["History matching", "z, box C<sub>0</sub>, I(c) ≤ τ", "NROY set C", "Produces C"],
+        ["Image maps", "C, θ<sub>2</sub>(·), δ<sub>spill</sub>(·)", "Θ<sub>hm</sub>, Θ<sub>exp</sub>", "Yes"],
+        ["Select c<sub>0</sub>", "C", "median-I survivor", "Yes, as a selection"],
+        ["Simulate panel", "c<sub>0</sub>, π, measures", "one-world micro-data", "No"],
+        ["Measurement admission", "panel, restriction on M", "M*, Θ<sub>cv</sub>", "No"],
+        ["Foil 1 (BCF / forest)", "panel at c<sub>0</sub>", "I<sub>BCF</sub>", "No"],
+        ["Foil 2 (exposure map)", "π<sub>1</sub> panel at c<sub>0</sub>", "I<sub>E2</sub>", "No"],
+        ["Oracle at c<sub>0</sub>", "kernel at c<sub>0</sub>", "θ<sub>true</sub>(c<sub>0</sub>), δ<sub>true</sub>(c<sub>0</sub>)", "No"]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The overlay places each one-world interval against its own honest set: I<sub>BCF</sub> against Θ<sub>hm</sub>, and I<sub>E2</sub> against Θ<sub>exp</sub>. Cross-comparing the forest interval to Θ<sub>exp</sub>, or the exposure interval to Θ<sub>hm</sub>, mixes estimands. AMENDMENT-01 states that fact as a design constraint, not as a limitation to be walked around. π<sub>2</sub> is deterministic given the graph; no design-based estimator reaches the headline policy. That is itself a result about the toolkit, recorded in Lecture 4."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "3. Objects, and what they are not"
+    },
+    {
+      "type": "paragraph",
+      "text": "The student has already been corrected on the vocabulary below. The corrections are load-bearing for the composition. They are restated here as claims about objects, not as style notes."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "NROY is not observationally valid"
+    },
+    {
+      "type": "paragraph",
+      "text": "A calibration in C has not been ruled out yet by the anchors, the moment map, the frozen V, and the frozen τ. That is a weaker statement than observational equivalence, and it is a weaker statement than “the model is correct at c.” Points that would be observationally equivalent to a complete-data law in Manski's sense can still fail I(c) ≤ τ, and points that pass I(c) ≤ τ need not be observationally equivalent to one another. The acronym is the claim."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "I(c) ≤ τ is one joint ellipsoid, not a Pakes–Tamer model"
+    },
+    {
+      "type": "paragraph",
+      "text": "The inequality I(c) ≤ τ is a single quadratic restriction on the residual z − M̂(c). It can be taught as a pedagogical bridge to moment inequalities: the anchors plus a tolerance define a set of c rather than a point. It is not the revealed-preference apparatus of Pakes, Porter, Ho, and Ishii (2015), and it is not an incomplete game in the sense of Ciliberto and Tamer (2009). Those models generate sets because the solution concept or the optimizing inequalities do not select a unique outcome. Here the kernel is complete. The set lives in calibration space because the anchors do not pin c."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Θ is a set, not a distribution"
+    },
+    {
+      "type": "paragraph",
+      "text": "Θ<sub>hm</sub> is the image of a map. Distinct points of C can map to different values of θ<sub>2</sub>; they need not. Whether the image is a singleton, a tight interval, or a wide interval is an empirical question about this kernel, these anchors, and this τ. Nothing in the definition supplies a measure on C, and nothing in the definition supplies a measure on Θ<sub>hm</sub>. Putting a uniform distribution on survivors, or reporting a mean and a standard deviation of θ<sub>2</sub>(c) over C as if they were posterior moments, is an extra assumption. Lecture 2 already refused that smuggling for Manski sets. The same refusal applies here."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "History matching does not assume perfect measurements"
+    },
+    {
+      "type": "paragraph",
+      "text": "The diagonal of V contains an explicit discrepancy budget δ. Kennedy and O'Hagan (2001) introduced model discrepancy as a Gaussian process between the best-fitting run of a simulator and the real system; Craig, Goldstein, Seheult, and Smith (1997) and Vernon, Goldstein, and Bower (2010) carry an analogous term in Bayes-linear history matching. This project's δ is cruder — a frozen, diagonal, two-percentage-point budget — but it is not zero. History matching as specified here does not pretend that M(c) would equal z at the true c. The measurement layer of Lecture 3 is a different axis: it asks which operationalizations of the micro-outcome are admissible on a simulated panel, not how many percentage points of moment error the filter will absorb. Do not collapse δ and the admission set M* into one “measurement problem.”"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Same reporting logic as a Manski set, not the same object"
+    },
+    {
+      "type": "paragraph",
+      "text": "It is correct to report Θ<sub>hm</sub> the way one reports a Manski identified set: data plus assumptions yield a set of still-possible values of a named functional; one does not replace the set by a convenient point (Manski 2003; Tamer 2010). It is not correct to say that Θ<sub>hm</sub> possesses the exact mathematical properties of a Manski identified set. Four differences are already visible. First, retention is a thresholded discrepancy, not exact observational equivalence of c with a population P. Second, sampling variation in z and Monte Carlo error in M̂ are folded into V, so the population/sample separation of Lecture 2 is not cleanly maintained. Third, the kernel is fully specified; incompleteness lives in c, not in a missing coordinate of (Y(1), Y(0)). Fourth, V contains δ, which is not an object in Θ(P, A). Call Θ<sub>hm</sub> a not-ruled-out image, and say that it occupies the same reporting slot."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "A point from the image is a selection, not a structurally dishonest estimate"
+    },
+    {
+      "type": "paragraph",
+      "text": "If a foil interval is much narrower than Θ<sub>hm</sub>, the honest description is that the interval is a selection from the image, plus sampling or design uncertainty at one world. Calling the point “structurally dishonest” attributes a moral failure to an estimator that was never asked the image question. The architecture of the foil is the subject of Lecture 4; the composition question is whether that architecture, run at c<sub>0</sub>, covers the image of which c<sub>0</sub> is one point."
+    },
+    {
+      "type": "callout",
+      "title": "Completing a step, not diagnosing blindness",
+      "text": "History-matching papers ordinarily stop with NROY in input space (Craig et al. 1997; Vernon, Goldstein, and Bower 2010). Agent-based and socio-environmental papers that do push an ensemble through a policy outcome are named in Section 7; they are near-neighbors, not antagonists. The missing step this project completes is narrow: NROY is usually left in parameter space, and the economist's policy question lives in estimand space. Mapping a named interference contrast through C, pairing it with a measurement-admission set and with two foils that isolate calibration uncertainty, on a simulator where θ<sub>true</sub> is known, is the step. It is not a claim that those communities failed to notice equifinality."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "4. Overlay and pre-registered verdicts"
+    },
+    {
+      "type": "paragraph",
+      "text": "Once both legs exist, the money plot is an overlay of intervals and sets on the line of the relevant estimand. For the headline contrast the objects are I<sub>BCF</sub>, Θ<sub>hm</sub>, Θ<sub>cv</sub>, and θ<sub>true</sub>(c<sub>0</sub>). For the spillover contrast, if the amendment is accepted, they are I<sub>E2</sub>, Θ<sub>exp</sub>, and δ<sub>true</sub>(c<sub>0</sub>). Each foil is scored against its own honest set. METHODOLOGY.md §10, extended by the draft amendment, names four verdicts. All are admissible."
+    },
+    {
+      "type": "table",
+      "caption": "Table 2. Pre-registered verdicts. Empty NROY is a finding about (f, z, τ, δ). The threshold is never loosened after the fact to populate C.",
+      "header": true,
+      "rows": [
+        ["Code", "Statement", "What it would mean"],
+        ["F-OVERCONF", "I<sub>BCF</sub> sits in the interior of Θ<sub>hm</sub> and excludes θ<sub>true</sub>(c<sub>0</sub>) or parts of [L, U]", "One-world interval narrower than the image, and wrong about the image or the planner"],
+        ["F-HONEST", "I<sub>BCF</sub> covers [L, U]", "The foil interval is at least as wide as the image; the interesting overconfidence story is false here"],
+        ["F-EMPTY", "|C| = 0 after wave 3", "The kernel plus δ cannot reach z; reject the pair (f, z), do not touch τ"],
+        ["F-SINGLETON", "NROY box &lt; 5% of original volume per axis", "Design failure: the filter collapsed the box; widen one declared coordinate before the week gate"],
+        ["F-OVERCONF-E2", "I<sub>E2</sub> interior to Θ<sub>exp</sub> and/or excludes δ<sub>true</sub>", "Same logic, spillover estimand (amendment)"],
+        ["F-HONEST-E2", "I<sub>E2</sub> covers Θ<sub>exp</sub>", "Same logic, spillover estimand (amendment)"]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Two scoring rules are easy to mis-state. First, F-HONEST is coverage of the image by the interval, not coverage of θ<sub>true</sub>(c<sub>0</sub>) alone. An interval can cover the planner's number at c<sub>0</sub> and still exclude other points of Θ<sub>hm</sub>; that is F-OVERCONF if the interval sits inside the image. Second, F-EMPTY is not a warrant to enlarge τ or δ. The discrepancy budget and the threshold are part of the identifying assumption menu. Changing them after seeing |C| = 0 would be changing the menu in order to avoid a finding. Lecture 2's Law of Decreasing Credibility applies directly: a more permissive V buys a larger image at a credibility price, and that price is paid up front or not at all."
+    },
+    {
+      "type": "paragraph",
+      "text": "The amendment adds a validity gate that is not a finding: at the oracle measure m<sub>1</sub>, if E2's point estimate misses δ<sub>true</sub>(c<sub>0</sub>) by more than its own interval, the harness is broken. Stop, fix, re-run. A design-based estimator on a known design, with a known exposure map, on data generated from the kernel, must recover the exposure contrast it is defined to recover. Failure there is a software event, not F-OVERCONF-E2."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "5. A worked mini-example (invented numbers)"
+    },
+    {
+      "type": "paragraph",
+      "text": "The arithmetic below is invented for pedagogy. It is not a project result, not a calibration, and not a forecast of Θ<sub>hm</sub>. Its only job is to make the distinction between a selection and an image visible in a table a reader can check by hand."
+    },
+    {
+      "type": "paragraph",
+      "text": "Suppose three calibrations survive wave 3. Call them c<sub>A</sub>, c<sub>B</sub>, c<sub>C</sub>, and suppose the headline map takes the values θ<sub>2</sub>(c<sub>A</sub>) = 0.04, θ<sub>2</sub>(c<sub>B</sub>) = 0.07, θ<sub>2</sub>(c<sub>C</sub>) = 0.15. The not-ruled-out image, reported as an empirical range, is Θ<sub>hm</sub> = [0.04, 0.15]. Let c<sub>0</sub> = c<sub>B</sub> be the median-implausibility survivor, so the planner's number at the foil world is θ<sub>true</sub>(c<sub>0</sub>) = 0.07. Suppose the forest, fit on the panel at c<sub>B</sub>, returns the honest interval I<sub>BCF</sub> = [0.068, 0.074]."
+    },
+    {
+      "type": "table",
+      "caption": "Table 3. Invented three-world arithmetic. I<sub>BCF</sub> covers the world on which it was computed and covers none of the rest of the image. That configuration is the pedagogical picture of F-OVERCONF, not a finding.",
+      "header": true,
+      "rows": [
+        ["Object", "Value (invented)", "Role"],
+        ["θ<sub>2</sub>(c<sub>A</sub>)", "0.04", "NROY point; not selected as c<sub>0</sub>"],
+        ["θ<sub>2</sub>(c<sub>B</sub>) = θ<sub>true</sub>(c<sub>0</sub>)", "0.07", "Planner's number at the foil world"],
+        ["θ<sub>2</sub>(c<sub>C</sub>)", "0.15", "NROY point; not selected as c<sub>0</sub>"],
+        ["Θ<sub>hm</sub>", "[0.04, 0.15]", "Image; the honest set for the forest"],
+        ["I<sub>BCF</sub> at c<sub>B</sub>", "[0.068, 0.074]", "One-world SUTVA interval"],
+        ["Selection c<sub>B</sub> as a point", "0.07", "A point in the image, not the image"]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Three remarks, all visible in the table. First, I<sub>BCF</sub> is not a bad interval for the SUTVA functional it estimates at c<sub>B</sub>: it covers 0.07 and is a few thousandths wide. Honesty in the Athey–Imbens–Wager sense can hold and the interval can still be a poor report of Θ<sub>hm</sub>. Second, the width of Θ<sub>hm</sub> is produced by the map, not by a promise that equifinal calibrations are “wildly different.” Replace 0.15 by 0.072 and the image collapses to something the forest interval nearly covers; that configuration would be closer to F-HONEST. Width is empirical. Third, reporting 0.07 with the forest's standard error as “the” effect of hub seeding is a selection from {0.04, 0.07, 0.15}. The selection can be described without calling the forest dishonest. The composition question is whether the report discloses the image."
+    },
+    {
+      "type": "paragraph",
+      "text": "If a measurement layer were stacked at c<sub>B</sub>, Θ<sub>cv</sub> would be a second interval on the same line, generated by varying the admitted operationalization rather than by varying c. In the invented table it is omitted on purpose. Mixing a measurement range at one world with a calibration image over many worlds, and calling the union “uncertainty,” would undo Lectures 3 and 2 at once."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "6. What would falsify the interesting story"
+    },
+    {
+      "type": "paragraph",
+      "text": "The interesting story is F-OVERCONF: a modern one-world interval sits inside the image and excludes parts of it, perhaps including the planner's number. Pre-registration means the complementary outcomes are not failed projects. They are the other values of a discrete random variable the paper has already named."
+    },
+    {
+      "type": "bullet",
+      "items": [
+        "<b>F-HONEST.</b> If I<sub>BCF</sub> covers [L, U], the foil is at least as conservative as the image on this kernel and these anchors. The composition still stands — the objects are well-defined, the overlay is still the honest exhibit — but the overconfidence narrative is false here. That is a publishable result about this design, not a reason to reopen τ.",
+        "<b>A tight image.</b> If distinct survivors map to nearly the same θ<sub>2</sub>, equifinality in parameter space has not propagated to estimand space. The project will have measured that fact rather than assumed its opposite. Do not write that NROY points must disagree about policy.",
+        "<b>F-EMPTY.</b> If no point of the box survives, the pair (kernel, anchors) is rejected at the stated δ and τ. The finding is that the specification cannot reach the World Bank moments. It is not a warrant to refit. An empty NROY is as informative as a wide one, and more embarrassing only if emptiness was not listed in advance. It was listed.",
+        "<b>F-SINGLETON.</b> Collapse of the box is a design failure under the protocol, handled by widening one declared coordinate before the week gate. It is not evidence that the policy effect is point-identified."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "A paper that can only be written if F-OVERCONF occurs is not a pre-registered paper. The December deliverable is the overlay and the argument that can be defended under any of the named verdicts."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "7. Modern practices in causal identification and inference from simulations"
+    },
+    {
+      "type": "paragraph",
+      "text": "“Inference from simulations” is not one literature. Several mature traditions use a simulator, and they put different objects into the reported interval. The composition is easier to see once those objects are named. The list below is not a ranking and not a claim that any tradition is confused. It is a map of what each interval is an interval for."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Monte Carlo studies of estimators"
+    },
+    {
+      "type": "paragraph",
+      "text": "The econometric simulation-study genre fixes a data-generating process, including the true value of a target parameter, draws many samples, and records bias, root mean squared error, and coverage of a candidate estimator. Huber, Lechner, and Wunsch (2013) is a canonical empirical Monte Carlo study of propensity-score estimators for the average treatment effect on the treated; the design is built from real German labour-market data, placebo treatments are assigned among the non-treated, and the object of the exercise is estimator performance. Advani, Kitagawa, and Słoczyński (2019) examine whether two empirically motivated Monte Carlo proposals can select a treatment-effect estimator under unconfoundedness, and conclude that they are unreliable for bias and no better than a bootstrap for mean squared error. Athey and Imbens (2016), in the paper that introduces honest recursive partitioning, use simulation to compare coverage of honest and non-honest intervals for heterogeneous effects. Athey, Imbens, Metzger, and Munro (2024) return to the genre as a design problem, using Wasserstein generative adversarial networks to reduce the researcher's degrees of freedom in choosing a Monte Carlo DGP."
+    },
+    {
+      "type": "paragraph",
+      "text": "What the interval contains, when one is reported, is sampling uncertainty of an estimator under a DGP that is not in doubt. The DGP is the experimental control, not the scientific unknown. Calibration of a substantive simulator is outside the genre's question. Our use of a simulator is the reverse: the kernel is the substantive model, c is unknown up to NROY, and the forest is a foil, not the object whose risk function we are tabulating."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "The calibrated simulator as a policy laboratory"
+    },
+    {
+      "type": "paragraph",
+      "text": "A second, applied tradition picks a best-fit calibration, or a handful of posterior draws, runs a policy counterfactual, and reports θ̂ with Monte Carlo standard errors. Those standard errors are simulation noise at the selected c — the variability of Ȳ<sub>T</sub> across random number streams — not uncertainty about which c is still possible. The report can be internally accurate and still be a selection from an uncomputed image. Agent-based practice has a large cookbook for getting to that selected c. Thiele, Kurth, and Grimm (2014) survey parameter estimation and sensitivity analysis for NetLogo models. Grazzini and Richiardi (2015) give conditions under which ergodic agent-based models can be estimated by simulated minimum distance. Carrella (2021), estimating forty-one published simulation models with nine algorithms, finds that no algorithm dominates and that half of the agent-based models tested could not be fully identified. The last fact is a calibration result in parameter space. It is not yet an image of a named causal estimand."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Kennedy–O'Hagan Bayesian calibration"
+    },
+    {
+      "type": "paragraph",
+      "text": "Kennedy and O'Hagan (2001) treat the simulator as a function of unknown inputs, place a Gaussian-process emulator on it, and introduce an explicit discrepancy process between the best-fitting run and the real system. The product is a posterior over inputs and discrepancy, and a posterior-predictive distribution for the system (and, if desired, for a policy functional of the system). The reported interval is probabilistic over those unknowns. That is a different object from NROY. A highest-posterior-density set can be read as a set, but it is a set induced by a prior and a likelihood, not by a thresholded implausibility cut. This project does not produce a posterior over C and does not promise one by December."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "History matching and Bayes-linear uncertainty quantification"
+    },
+    {
+      "type": "paragraph",
+      "text": "Craig, Goldstein, Seheult, and Smith (1997) introduced Bayes-linear history matching on a hydrocarbon-reservoir simulator: specify means, variances, and covariances, not a full probabilistic model, and iteratively discard regions of input space that cannot match historical production. Vernon, Goldstein, and Bower (2010) ran the same programme on the Galform galaxy-formation model and popularised the language of implausibility waves and the not-ruled-out-yet set. The product of the analysis is NROY in input space, plus a collection of acceptable runs. Policy, when it appears, is usually a further evaluation the paper may or may not perform. The interval, if one is drawn around a forecast, is not a sampling interval for an estimator of θ and is not a posterior interval unless the authors add a second, probabilistic layer. Our protocol takes NROY as that product and then asks the economist's question about it."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Equifinality and robust policy analysis in ABM and SES"
+    },
+    {
+      "type": "paragraph",
+      "text": "Beven and Freer (2001) treat equifinality — many model structures and many parameter sets equally acceptable against the same observations — as endemic to mechanistic environmental modelling, and operationalise it with generalised likelihood uncertainty estimation (GLUE): keep a behavioural ensemble, weight members by an informal likelihood, and report prediction quantiles of the ensemble. Beven (2006) restates the thesis as a manifesto: the potential for multiple acceptable representations should be taken as the default, not as a failed calibration. Williams, Guikema, Brown, and Agrawal (2020), in <i>Environmental Modelling and Software</i>, take the next step that history matching often does not. They generate a diverse set of calibrations of an agent-based smallholder-farming model (DMC-RPA: diverse model calibration for robust policy analysis) and push the ensemble through resilience-enhancing policy strategies, without assigning probabilities to members. That paper is a near-neighbor. It maps an ensemble of ABM calibrations through policy outcomes and asks whether policy conclusions are robust across the ensemble. It does not name economist-native causal estimands under interference, does not pair the ensemble with a SUTVA foil and an exposure-mapped foil in order to isolate calibration uncertainty, and does not sit on a simulator whose planner's θ<sub>true</sub> is retained as a scoring device."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Design-based causal inference under interference"
+    },
+    {
+      "type": "paragraph",
+      "text": "Aronow and Samii (2017) give the randomization-based framework used as foil 2: a known design, an exposure map, and inverse-probability contrasts, with variance that comes from the design. The interval is an interval for an exposure contrast on a single experimental design. The framework is silent on calibration. There is no c, no NROY, and no image. Lecture 4 recorded the further fact that a deterministic targeting rule has no design, so the framework does not reach θ<sub>2</sub>."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Causal machine learning and heterogeneous effects"
+    },
+    {
+      "type": "paragraph",
+      "text": "Causal forests (Wager and Athey 2018) and Bayesian causal forests (Hahn, Murray, and Carvalho 2020) estimate τ(x) = μ<sub>1</sub>(x) − μ<sub>0</sub>(x) from a single observational or experimental panel under SUTVA, unconfoundedness, and overlap. The interval — honest sampling interval or posterior interval for τ — is uncertainty about a SUTVA functional on that panel. The literature is silent on calibration of a simulator. Using the forest as a foil is a statement about architecture and about one-world conditioning, not a claim that the forest is the wrong tool for the problem it was built to solve."
+    },
+    {
+      "type": "table",
+      "caption": "Table 4. What uncertainty each tradition puts in the reported interval. Rows are objects, not grades.",
+      "header": true,
+      "rows": [
+        ["Tradition", "Object in the interval", "Silent on"],
+        ["MC study of estimators", "Estimator performance under a known DGP", "Calibration of a substantive simulator"],
+        ["Best-fit policy laboratory", "Simulation noise at a selected c*", "The rest of the acceptable set"],
+        ["Kennedy–O'Hagan", "Posterior over inputs and discrepancy", "A thresholded NROY (unless added)"],
+        ["History matching", "NROY in input space (a set, not an interval)", "Named causal estimands, unless mapped"],
+        ["GLUE / DMC-RPA", "Ensemble forecast or policy range over behavioural models", "Economist-native interference estimands; planner's θ<sub>true</sub> as a score"],
+        ["Aronow–Samii", "Design-based exposure contrast on one design", "Calibration; deterministic π<sub>2</sub>"],
+        ["Forests / BCF", "SUTVA τ(x) or ATE on one panel", "Calibration; interference"]
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "8. Established literature, and the precise gap"
+    },
+    {
+      "type": "paragraph",
+      "text": "Four literatures are mature, and their pairwise intersections are not empty. The four-way intersection that this project occupies is thin. Stating that fact too loosely becomes a uniqueness claim the record does not support. Stating it too timidly hides the wedge a master's applied project can actually defend."
+    },
+    {
+      "type": "paragraph",
+      "text": "<b>(i) Partial identification and moment inequalities.</b> Manski (2003, 2007) and the review of Tamer (2010) give the reporting logic used throughout Lectures 2 and 5. Pakes, Porter, Ho, and Ishii (2015) and Ciliberto and Tamer (2009) generate sets from optimizing inequalities and from incomplete games. None of these papers history-matches an agent-based kernel, and incompleteness in that tradition lives in missing counterfactuals or in a set-valued solution concept, not in an unpinned calibration of a complete simulator."
+    },
+    {
+      "type": "paragraph",
+      "text": "<b>(ii) History matching and model discrepancy.</b> Craig et al. (1997), Kennedy and O'Hagan (2001), and Vernon, Goldstein, and Bower (2010) are the source of I(c), of δ, and of NROY. The product is a set in input space. Mapping that set through an economist's policy contrast, and scoring one-world causal estimators against the image, is not what those papers do."
+    },
+    {
+      "type": "paragraph",
+      "text": "<b>(iii) Interference-aware estimation.</b> Hudgens and Halloran (2008), Aronow and Samii (2017), and the subsequent design-based literature (Lecture 4) identify exposure or group-level contrasts from a known randomization. They are silent on the origin of the potential-outcome array in a calibrated simulator."
+    },
+    {
+      "type": "paragraph",
+      "text": "<b>(iv) Causal machine learning and heterogeneous treatment effects.</b> Athey and Imbens (2016), Wager and Athey (2018), and Hahn, Murray, and Carvalho (2020) give the foil. They require SUTVA and a single panel."
+    },
+    {
+      "type": "paragraph",
+      "text": "Near-neighbors must be named so the wedge is not overclaimed. Williams, Guikema, Brown, and Agrawal (2020) already push a diverse ABM ensemble through policy strategies in a socio-environmental system; that is robust policy analysis under equifinality, and it is the closest published analogue to an image of a policy outcome over a calibration set. Beven (2006) and Beven and Freer (2001) already insist that a behavioural ensemble, not a single fitted point, is the honest calibration product. Carrella (2021) already documents unidentified agent-based models as an empirical regularity in the JASSS record. Grazzini and Richiardi (2015) already treat estimation of ABMs as a simulated-minimum-distance problem. None of those papers is being corrected. Each leaves a different piece on the table."
+    },
+    {
+      "type": "callout",
+      "title": "The remaining wedge, stated narrowly",
+      "text": "The project does not claim to have discovered equifinality. The remaining wedge is the composition: economist-native named causal estimands — policy contrasts under interference — as the image of a history-matched NROY set, plus a measurement-admission set, plus a paired SUTVA foil and an interference-aware estimator that together isolate calibration uncertainty as the residual gap, on a simulator where θ<sub>true</sub> is known. That sentence is the claim. Every adjective in it is doing work. Remove “named causal estimands” and Williams et al. (2020) already sit nearby. Remove “history-matched NROY” and one is back at a best-fit laboratory. Remove the paired foils and the residual gap is not isolated. Remove the known θ<sub>true</sub> and the overlay cannot be scored."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "9. Concrete value propositions by December 2026"
+    },
+    {
+      "type": "paragraph",
+      "text": "Results freeze on 2026-11-20. The project is delivered on 2026-12-01. What follows are deliverables. They are not findings. Findings are contingent on the waves and on the overlay; the verdicts of Table 2 remain open. A value proposition that can be met under F-HONEST, under a tight image, and under F-EMPTY is the only kind of proposition a pre-registered applied project can make."
+    },
+    {
+      "type": "enum",
+      "items": [
+        "<b>A fully specified, pre-registered kernel, history-matching protocol, and named estimands.</b> This is already largely in METHODOLOGY.md: population, kernel, box, arms, θ<sub>1</sub>, θ<sub>2</sub>, τ, anchors, I(c), V, δ, wave rule, NROY, measurement admission, foil, and the verdict codes. The draft amendment adds E2 and Θ<sub>exp</sub> if accepted. December's job is to keep that specification frozen, not to enlarge it.",
+        "<b>A working Python engine that produces NROY or F-EMPTY against live World Bank anchors, and the image Θ<sub>hm</sub> of θ<sub>2</sub>.</b> Live means the keyless API protocol of METHODOLOGY.md §5, not a committed local extract. F-EMPTY is an acceptable terminal state of the engine.",
+        "<b>The money-plot overlay:</b> I<sub>BCF</sub>, I<sub>E2</sub> (if the amendment is accepted), Θ<sub>hm</sub>, Θ<sub>exp</sub>, Θ<sub>cv</sub>, and θ<sub>true</sub>(c<sub>0</sub>). Each one-world interval drawn against its own honest set. Invented numbers do not satisfy this deliverable; the plot must be produced by the engine from the frozen protocol.",
+        "<b>A written argument a master's applied project can defend:</b> the set-valued policy report as the honest product of data plus the maintained menu; a decomposition of overconfidence if F-OVERCONF appears (architecture versus one-world conditioning, using the two foils); and an honest report of F-HONEST if the interesting story does not appear.",
+        "<b>Pedagogical artifacts</b> — hand-example tests and this short course — sufficient for two advisors from different traditions (Hahn × Johnston) to locate their tools in the pipeline: BCF and honest forests as foil 1, partial-identification reporting logic as the slot occupied by Θ<sub>hm</sub>."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The following are explicitly not promised by December 2026."
+    },
+    {
+      "type": "bullet",
+      "items": [
+        "A real-network empirical application. The graph is one Erdős–Rényi draw. Replacing it with an observed village or school network is a different paper.",
+        "A NetLogo-quality public demo offered as science. A twin remains optional and is a reproduction check, not a result.",
+        "A new estimator with theorems. No influence-function expansion, no new exposure map, no new forest.",
+        "A posterior over NROY. The uniform sample of survivors remains a computational device for tracing an image."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "If the interesting story is false, the December paper is still the specification, the engine, the overlay, and the sentence that F-HONEST (or F-EMPTY, or a tight image) is what this design produced. That sentence is the point of having written Table 2 before any wave was run."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "References"
+    },
+    {
+      "type": "ref",
+      "text": "Advani, Arun, Toru Kitagawa, and Tymon Słoczyński. 2019. “Mostly Harmless Simulations? Using Monte Carlo Studies for Estimator Selection.” <i>Journal of Applied Econometrics</i> 34 (6): 893–910."
+    },
+    {
+      "type": "ref",
+      "text": "Aronow, Peter M., and Cyrus Samii. 2017. “Estimating Average Causal Effects under General Interference, with Application to a Social Network Experiment.” <i>Annals of Applied Statistics</i> 11 (4): 1912–1947."
+    },
+    {
+      "type": "ref",
+      "text": "Athey, Susan, and Guido W. Imbens. 2016. “Recursive Partitioning for Heterogeneous Causal Effects.” <i>Proceedings of the National Academy of Sciences</i> 113 (27): 7353–7360."
+    },
+    {
+      "type": "ref",
+      "text": "Athey, Susan, Guido W. Imbens, Jonas Metzger, and Evan Munro. 2024. “Using Wasserstein Generative Adversarial Networks for the Design of Monte Carlo Simulations.” <i>Journal of Econometrics</i> 240 (2): 105076."
+    },
+    {
+      "type": "ref",
+      "text": "Beven, Keith. 2006. “A Manifesto for the Equifinality Thesis.” <i>Journal of Hydrology</i> 320 (1–2): 18–36."
+    },
+    {
+      "type": "ref",
+      "text": "Beven, Keith, and Jim Freer. 2001. “Equifinality, Data Assimilation, and Uncertainty Estimation in Mechanistic Modelling of Complex Environmental Systems Using the GLUE Methodology.” <i>Journal of Hydrology</i> 249 (1–4): 11–29."
+    },
+    {
+      "type": "ref",
+      "text": "Carrella, Ernesto. 2021. “No Free Lunch when Estimating Simulation Parameters.” <i>Journal of Artificial Societies and Social Simulation</i> 24 (2): 7."
+    },
+    {
+      "type": "ref",
+      "text": "Ciliberto, Federico, and Elie Tamer. 2009. “Market Structure and Multiple Equilibria in Airline Markets.” <i>Econometrica</i> 77 (6): 1791–1828."
+    },
+    {
+      "type": "ref",
+      "text": "Craig, Peter S., Michael Goldstein, Allan H. Seheult, and James A. Smith. 1997. “Pressure Matching for Hydrocarbon Reservoirs: A Case Study in the Use of Bayes Linear Strategies for Large Computer Experiments.” In <i>Case Studies in Bayesian Statistics</i>, vol. III, edited by Constantine Gatsonis, James S. Hodges, Robert E. Kass, Robert McCulloch, Peter Rossi, and Nozer D. Singpurwalla, 37–93. New York: Springer."
+    },
+    {
+      "type": "ref",
+      "text": "Grazzini, Jakob, and Matteo Richiardi. 2015. “Estimation of Ergodic Agent-Based Models by Simulated Minimum Distance.” <i>Journal of Economic Dynamics and Control</i> 51: 148–165."
+    },
+    {
+      "type": "ref",
+      "text": "Hahn, P. Richard, Jared S. Murray, and Carlos M. Carvalho. 2020. “Bayesian Regression Tree Models for Causal Inference: Regularization, Confounding, and Heterogeneous Effects (with Discussion).” <i>Bayesian Analysis</i> 15 (3): 965–1056."
+    },
+    {
+      "type": "ref",
+      "text": "Huber, Martin, Michael Lechner, and Conny Wunsch. 2013. “The Performance of Estimators Based on the Propensity Score.” <i>Journal of Econometrics</i> 175 (1): 1–21."
+    },
+    {
+      "type": "ref",
+      "text": "Hudgens, Michael G., and M. Elizabeth Halloran. 2008. “Toward Causal Inference with Interference.” <i>Journal of the American Statistical Association</i> 103 (482): 832–842."
+    },
+    {
+      "type": "ref",
+      "text": "Kennedy, Marc C., and Anthony O'Hagan. 2001. “Bayesian Calibration of Computer Models.” <i>Journal of the Royal Statistical Society, Series B</i> 63 (3): 425–464."
+    },
+    {
+      "type": "ref",
+      "text": "Manski, Charles F. 2003. <i>Partial Identification of Probability Distributions</i>. New York: Springer."
+    },
+    {
+      "type": "ref",
+      "text": "Manski, Charles F. 2007. <i>Identification for Prediction and Decision</i>. Cambridge, MA: Harvard University Press."
+    },
+    {
+      "type": "ref",
+      "text": "Pakes, Ariel, Jack Porter, Kate Ho, and Joy Ishii. 2015. “Moment Inequalities and Their Application.” <i>Econometrica</i> 83 (1): 315–334."
+    },
+    {
+      "type": "ref",
+      "text": "Tamer, Elie. 2010. “Partial Identification in Econometrics.” <i>Annual Review of Economics</i> 2: 167–195."
+    },
+    {
+      "type": "ref",
+      "text": "Thiele, Jan C., Winfried Kurth, and Volker Grimm. 2014. “Facilitating Parameter Estimation and Sensitivity Analysis of Agent-Based Models: A Cookbook Using NetLogo and R.” <i>Journal of Artificial Societies and Social Simulation</i> 17 (3): 11."
+    },
+    {
+      "type": "ref",
+      "text": "Vernon, Ian, Michael Goldstein, and Richard G. Bower. 2010. “Galaxy Formation: A Bayesian Uncertainty Analysis.” <i>Bayesian Analysis</i> 5 (4): 619–669."
+    },
+    {
+      "type": "ref",
+      "text": "Wager, Stefan, and Susan Athey. 2018. “Estimation and Inference of Heterogeneous Treatment Effects Using Random Forests.” <i>Journal of the American Statistical Association</i> 113 (523): 1228–1242."
+    },
+    {
+      "type": "ref",
+      "text": "Williams, T. G., S. D. Guikema, D. G. Brown, and A. Agrawal. 2020. “Assessing Model Equifinality for Robust Policy Analysis in Complex Socio-Environmental Systems.” <i>Environmental Modelling and Software</i> 134: 104831."
+    }
+  ]
+}

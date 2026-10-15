@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECN593 PoC — Set-Identification Pipeline</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      min-height: 100vh;
+      padding: 2rem;
+      color: white;
+    }
+    .container { max-width: 1240px; margin: 0 auto; }
+    .header { margin-bottom: 2rem; }
+    .header-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .pulse-dot { width: 12px; height: 12px; background: #22d3ee; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+    .subtitle { color: #94a3b8; font-size: 0.875rem; margin-left: 1.75rem; }
+    .diagram-container {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 1rem;
+      border: 1px solid #1e293b;
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    svg { width: 100%; min-width: 980px; display: block; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .card { background: rgba(15, 23, 42, 0.5); border-radius: 0.75rem; border: 1px solid #1e293b; padding: 1.25rem; }
+    .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-dot.cyan { background: #22d3ee; }
+    .card-dot.emerald { background: #34d399; }
+    .card-dot.violet { background: #a78bfa; }
+    .card-dot.amber { background: #fbbf24; }
+    .card-dot.rose { background: #fb7185; }
+    .card h3 { font-size: 0.875rem; font-weight: 600; }
+    .card ul { list-style: none; color: #94a3b8; font-size: 0.75rem; }
+    .card li { margin-bottom: 0.375rem; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #475569; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>Set-Identification Pipeline — ECN593 PoC</h1>
+      </div>
+      <p class="subtitle">World Bank anchors &rarr; history matching &rarr; honest sets &Theta;; two estimators audited against what they cannot see</p>
+    </div>
+
+    <!-- Main Diagram -->
+    <div class="diagram-container">
+      <svg viewBox="0 0 1180 760">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background Grid -->
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- Spec boundary -->
+        <rect x="24" y="64" width="1130" height="596" rx="12" fill="rgba(251, 191, 36, 0.04)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="40" y="84" fill="#fbbf24" font-size="10" font-weight="600">ONE SPECIFICATION: METHODOLOGY.md (frozen before waves) &#183; code is a bug if it disagrees</text>
+
+        <!-- ============ ARROWS FIRST (render behind boxes) ============ -->
+
+        <!-- World Bank -> Anchors -->
+        <line x1="135" y1="196" x2="135" y2="266" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <!-- Anchors -> History matching -->
+        <path d="M 232 300 C 268 300, 264 152, 296 148" fill="none" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="238" y="222" fill="#94a3b8" font-size="8">z targets</text>
+        <!-- HM -> NROY -->
+        <line x1="400" y1="194" x2="400" y2="256" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="408" y="228" fill="#94a3b8" font-size="8">I(c) &#8804; &#964;</text>
+        <!-- NROY -> Policy maps -->
+        <path d="M 502 290 C 546 290, 544 142, 566 138" fill="none" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <!-- Maps -> Sets -->
+        <line x1="675" y1="182" x2="675" y2="246" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="683" y="218" fill="#94a3b8" font-size="8">image of c &#8614; &#952;(c)</text>
+        <!-- NROY -> select c0 -->
+        <path d="M 502 322 C 542 322, 540 464, 566 464" fill="none" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="508" y="398" fill="#94a3b8" font-size="8">median I(c)</text>
+        <!-- c0 -> panel -->
+        <line x1="675" y1="498" x2="675" y2="546" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <!-- Panel -> measurement layer -->
+        <path d="M 568 594 C 520 594, 520 482, 504 480" fill="none" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="508" y="542" fill="#94a3b8" font-size="8">Y_T at c&#8320;</text>
+        <!-- Measurement -> Theta_cv -->
+        <line x1="400" y1="528" x2="400" y2="582" stroke="#fb7185" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="408" y="560" fill="#94a3b8" font-size="8">m&#8321;, m&#8322; pass &#183; m&#8323; &#10007;</text>
+        <!-- Theta_cv -> overlay -->
+        <path d="M 502 614 C 690 618, 700 548, 846 542" fill="none" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <!-- Sets -> overlay -->
+        <path d="M 782 296 C 822 296, 820 428, 848 428" fill="none" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="792" y="366" fill="#94a3b8" font-size="8">&#920;_hm &#183; &#920;_exp</text>
+        <!-- Panel -> forest (corridor x 780-848) -->
+        <path d="M 782 586 C 818 586, 814 140, 846 134" fill="none" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <!-- Panel -> E2 -->
+        <path d="M 782 566 C 812 566, 812 276, 846 274" fill="none" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="798" y="390" fill="#94a3b8" font-size="8" transform="rotate(-90 798 390)">panels fit at c&#8320;</text>
+        <!-- Forest -> overlay -->
+        <line x1="970" y1="180" x2="970" y2="396" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="978" y="300" fill="#94a3b8" font-size="8">I_BCF CI</text>
+        <!-- E2 -> overlay -->
+        <line x1="970" y1="320" x2="970" y2="396" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="978" y="374" fill="#94a3b8" font-size="8">I_E2 CI</text>
+        <!-- Truth (dashed, known only in simulation) -->
+        <path d="M 675 636 L 675 668 L 900 668 L 900 594" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+        <text x="690" y="682" fill="#cbd5e1" font-size="8">&#952;_true(c&#8320;) &#8212; known only because we simulate (planner&#8217;s oracle)</text>
+
+        <!-- ============ BOXES ============ -->
+
+        <!-- World Bank API (external) -->
+        <rect x="40" y="110" width="192" height="86" rx="6" fill="#0f172a" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="40" y="110" width="192" height="86" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="136" y="130" fill="white" font-size="11" font-weight="600" text-anchor="middle">World Bank API v2</text>
+        <text x="136" y="147" fill="#94a3b8" font-size="8" text-anchor="middle">keyless JSON, mrnev=1, live</text>
+        <text x="136" y="161" fill="#94a3b8" font-size="8" text-anchor="middle">&#8226; SH.IMM.IDPT (DPT immunization)</text>
+        <text x="136" y="174" fill="#94a3b8" font-size="8" text-anchor="middle">&#8226; SE.SEC.CMPT.LO.ZS (completion)</text>
+        <text x="136" y="187" fill="#94a3b8" font-size="8" text-anchor="middle">&#8226; IT.NET.USER.ZS (internet use)</text>
+
+        <!-- Anchors z (set/artifact) -->
+        <rect x="40" y="268" width="192" height="66" rx="6" fill="#0f172a" stroke="#a78bfa" stroke-width="1.5"/>
+        <rect x="40" y="268" width="192" height="66" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="136" y="288" fill="white" font-size="11" font-weight="600" text-anchor="middle">Anchor vector z</text>
+        <text x="136" y="305" fill="#94a3b8" font-size="8" text-anchor="middle">mean DPT 86.2 &#183; corr 0.605</text>
+        <text x="136" y="318" fill="#94a3b8" font-size="8" text-anchor="middle">internet 68.6 &#183; pp units!</text>
+        <text x="136" y="330" fill="#fbbf24" font-size="7" text-anchor="middle">rescale vs [0,1] moments = first task (A2)</text>
+
+        <!-- History matching (computation) -->
+        <rect x="300" y="102" width="200" height="92" rx="6" fill="#0f172a" stroke="#34d399" stroke-width="1.5"/>
+        <rect x="300" y="102" width="200" height="92" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="400" y="122" fill="white" font-size="11" font-weight="600" text-anchor="middle">History matching (&#167;6)</text>
+        <text x="400" y="139" fill="#94a3b8" font-size="8" text-anchor="middle">LHS waves &#215;3 &#183; 1000 pts each</text>
+        <text x="400" y="152" fill="#94a3b8" font-size="8" text-anchor="middle">implausibility I(c) vs anchors</text>
+        <text x="400" y="165" fill="#94a3b8" font-size="8" text-anchor="middle">&#964; = &#967;&#178;&#8324;(0.95) &#183; &#948; budget frozen</text>
+        <text x="400" y="182" fill="#34d399" font-size="7" text-anchor="middle">no emulator &#8212; direct evaluation only</text>
+
+        <!-- NROY set (artifact) -->
+        <rect x="300" y="258" width="200" height="76" rx="6" fill="#0f172a" stroke="#a78bfa" stroke-width="1.5"/>
+        <rect x="300" y="258" width="200" height="76" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="400" y="278" fill="white" font-size="11" font-weight="600" text-anchor="middle">NROY set C (&#167;7)</text>
+        <text x="400" y="295" fill="#94a3b8" font-size="8" text-anchor="middle">worlds consistent with anchors</text>
+        <text x="400" y="308" fill="#94a3b8" font-size="8" text-anchor="middle">moment inequalities, NOT a posterior</text>
+        <text x="400" y="324" fill="#fb7185" font-size="7" text-anchor="middle">guards: F-EMPTY (no rescue) &#183; F-SINGLETON</text>
+
+        <!-- Policy maps (computation) -->
+        <rect x="566" y="92" width="216" height="90" rx="6" fill="#0f172a" stroke="#34d399" stroke-width="1.5"/>
+        <rect x="566" y="92" width="216" height="90" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="674" y="112" fill="white" font-size="11" font-weight="600" text-anchor="middle">Policy estimand maps (&#167;4)</text>
+        <text x="674" y="129" fill="#94a3b8" font-size="8" text-anchor="middle">&#952;&#8322;(c): hub-seed vs control (HEADLINE)</text>
+        <text x="674" y="142" fill="#94a3b8" font-size="8" text-anchor="middle">&#948;_spill(c): exposure contrast on &#960;&#8321;</text>
+        <text x="674" y="155" fill="#94a3b8" font-size="8" text-anchor="middle">R = 200 paired MC reps per arm</text>
+        <text x="674" y="172" fill="#34d399" font-size="7" text-anchor="middle">interference &#947; &#8800; 0 everywhere in the box</text>
+
+        <!-- Identified sets (artifact) -->
+        <rect x="566" y="248" width="216" height="94" rx="6" fill="#0f172a" stroke="#a78bfa" stroke-width="1.5"/>
+        <rect x="566" y="248" width="216" height="94" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="674" y="268" fill="white" font-size="11" font-weight="600" text-anchor="middle">Identified sets</text>
+        <text x="674" y="285" fill="#94a3b8" font-size="8" text-anchor="middle">&#920;_hm = image of &#952;&#8322; over C</text>
+        <text x="674" y="298" fill="#94a3b8" font-size="8" text-anchor="middle">&#920;_exp = image of &#948;_spill over C (AM-01)</text>
+        <text x="674" y="315" fill="#a78bfa" font-size="7" text-anchor="middle">the honest answer: an interval, not a point</text>
+        <text x="674" y="330" fill="#a78bfa" font-size="7" text-anchor="middle">width is information, not failure</text>
+
+        <!-- Select c0 (planner-side) -->
+        <rect x="566" y="430" width="216" height="66" rx="6" fill="#0f172a" stroke="#22d3ee" stroke-width="1.5"/>
+        <rect x="566" y="430" width="216" height="66" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="674" y="450" fill="white" font-size="11" font-weight="600" text-anchor="middle">Select world c&#8320; (&#167;9)</text>
+        <text x="674" y="467" fill="#94a3b8" font-size="8" text-anchor="middle">median-implausibility survivor</text>
+        <text x="674" y="484" fill="#22d3ee" font-size="7" text-anchor="middle">pre-declared, seeded, reproducible</text>
+
+        <!-- Simulate panel (computation/engine) -->
+        <rect x="566" y="548" width="216" height="86" rx="6" fill="#0f172a" stroke="#fbbf24" stroke-width="1.5"/>
+        <rect x="566" y="548" width="216" height="86" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="674" y="568" fill="white" font-size="11" font-weight="600" text-anchor="middle">Simulate micro-panel</text>
+        <text x="674" y="585" fill="#94a3b8" font-size="8" text-anchor="middle">kernel &#167;2 &#183; arms &#960;&#8321;, &#960;&#8322; (+ &#960;&#8320;)</text>
+        <text x="674" y="598" fill="#94a3b8" font-size="8" text-anchor="middle">features X, treatments D, outcomes</text>
+        <text x="674" y="618" fill="#fbbf24" font-size="7" text-anchor="middle">this panel is what every estimator gets to see</text>
+
+        <!-- Measurement layer (filter) -->
+        <rect x="300" y="430" width="204" height="96" rx="6" fill="#0f172a" stroke="#fb7185" stroke-width="1.5"/>
+        <rect x="300" y="430" width="204" height="96" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="402" y="450" fill="white" font-size="11" font-weight="600" text-anchor="middle">Measurement layer (&#167;8)</text>
+        <text x="402" y="467" fill="#94a3b8" font-size="8" text-anchor="middle">m&#8321; oracle &#183; m&#8322; survey noise</text>
+        <text x="402" y="480" fill="#94a3b8" font-size="8" text-anchor="middle">m&#8323; bad item (loads on x&#8323;)</text>
+        <text x="402" y="497" fill="#94a3b8" font-size="8" text-anchor="middle">pre-declared admission restriction</text>
+        <text x="402" y="514" fill="#fb7185" font-size="7" text-anchor="middle">which outcome operationalizations are admissible</text>
+
+        <!-- Theta_cv (artifact) -->
+        <rect x="300" y="584" width="204" height="56" rx="6" fill="#0f172a" stroke="#a78bfa" stroke-width="1.5"/>
+        <rect x="300" y="584" width="204" height="56" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="402" y="604" fill="white" font-size="11" font-weight="600" text-anchor="middle">&#920;_cv</text>
+        <text x="402" y="621" fill="#94a3b8" font-size="8" text-anchor="middle">second identified set: admissible measures</text>
+
+        <!-- Forest (foil) -->
+        <rect x="848" y="90" width="244" height="90" rx="6" fill="#0f172a" stroke="#fbbf24" stroke-width="1.5"/>
+        <rect x="848" y="90" width="244" height="90" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="970" y="110" fill="white" font-size="11" font-weight="600" text-anchor="middle">FOIL 1 &#8212; causal forest / BCF</text>
+        <text x="970" y="127" fill="#94a3b8" font-size="8" text-anchor="middle">econml &#183; honest splits &#183; fixed seed</text>
+        <text x="970" y="140" fill="#94a3b8" font-size="8" text-anchor="middle">SUTVA architecture: cannot see &#947; edges</text>
+        <text x="970" y="157" fill="#fbbf24" font-size="7" text-anchor="middle">default practice of applied work &#8212; the strawman we refuse to rely on alone</text>
+        <text x="970" y="172" fill="#fbbf24" font-size="7" text-anchor="middle"></text>
+
+        <!-- E2 (good estimator) -->
+        <rect x="848" y="228" width="244" height="92" rx="6" fill="#0f172a" stroke="#34d399" stroke-width="1.5"/>
+        <rect x="848" y="228" width="244" height="92" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="970" y="248" fill="white" font-size="11" font-weight="600" text-anchor="middle">FOIL 2 &#8212; exposure-mapped E2</text>
+        <text x="970" y="265" fill="#94a3b8" font-size="8" text-anchor="middle">Aronow&#8211;Samii-style H&#225;jek, design-based</text>
+        <text x="970" y="278" fill="#94a3b8" font-size="8" text-anchor="middle">g_i = (D_i, share treated nbrs) &#183; runs on &#960;&#8321;</text>
+        <text x="970" y="295" fill="#34d399" font-size="7" text-anchor="middle">handles interference &#8212; still silent on calibration uncertainty</text>
+        <text x="970" y="310" fill="#34d399" font-size="7" text-anchor="middle">positive control: must hit &#948;_true at m&#8321; oracle</text>
+
+        <!-- Overlay (planner-side output) -->
+        <rect x="848" y="398" width="282" height="194" rx="6" fill="#0f172a" stroke="#22d3ee" stroke-width="1.5"/>
+        <rect x="848" y="398" width="282" height="194" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="989" y="420" fill="white" font-size="12" font-weight="700" text-anchor="middle">THE MONEY PLOT (&#167;9)</text>
+        <text x="989" y="443" fill="#94a3b8" font-size="8" text-anchor="middle">bands, one axis:</text>
+        <text x="989" y="459" fill="#94a3b8" font-size="8" text-anchor="middle">I_BCF &#183; I_E2 &#183; &#920;_hm &#183; &#920;_exp &#183; &#920;_cv</text>
+        <text x="989" y="475" fill="#94a3b8" font-size="8" text-anchor="middle">+ &#952;_true(c&#8320;) tick</text>
+        <text x="989" y="499" fill="#22d3ee" font-size="8" text-anchor="middle">verdicts: F-OVERCONF vs F-HONEST</text>
+        <text x="989" y="515" fill="#22d3ee" font-size="8" text-anchor="middle">(each CI judged against its OWN set)</text>
+        <text x="989" y="541" fill="#cbd5e1" font-size="8" text-anchor="middle">gap(I_BCF) = architecture + world-choice</text>
+        <text x="989" y="557" fill="#cbd5e1" font-size="8" text-anchor="middle">gap(I_E2) &#8776; calibration uncertainty alone</text>
+        <text x="989" y="579" fill="#475569" font-size="7" text-anchor="middle">if E2 covers everything: F-HONEST, reported as such</text>
+
+        <!-- ============ LEGEND (outside boundary) ============ -->
+        <text x="40" y="694" fill="white" font-size="10" font-weight="600">Legend</text>
+        <rect x="100" y="686" width="16" height="10" rx="2" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1"/>
+        <text x="122" y="694" fill="#94a3b8" font-size="8">External data</text>
+        <rect x="212" y="686" width="16" height="10" rx="2" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1"/>
+        <text x="234" y="694" fill="#94a3b8" font-size="8">Computation step</text>
+        <rect x="348" y="686" width="16" height="10" rx="2" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1"/>
+        <text x="370" y="694" fill="#94a3b8" font-size="8">Identified set / artifact</text>
+        <rect x="506" y="686" width="16" height="10" rx="2" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="528" y="694" fill="#94a3b8" font-size="8">Engine / foil estimator</text>
+        <rect x="664" y="686" width="16" height="10" rx="2" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1"/>
+        <text x="686" y="694" fill="#94a3b8" font-size="8">Admission filter</text>
+        <rect x="800" y="686" width="16" height="10" rx="2" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1"/>
+        <text x="822" y="694" fill="#94a3b8" font-size="8">Planner-side object</text>
+        <line x1="930" y1="691" x2="954" y2="691" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,5"/>
+        <text x="960" y="694" fill="#94a3b8" font-size="8">known only in simulation</text>
+
+        <text x="40" y="718" fill="#475569" font-size="8">Everything inside the dashed boundary is governed by one frozen spec. The only real-world numbers in the entire loop are the three anchor statistics.</text>
+      </svg>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot cyan"></div>
+          <h3>Frozen before any wave</h3>
+        </div>
+        <ul>
+          <li>&#8226; Parameter box C, &#964; = &#967;&#178;&#8324;(0.95), &#948; discrepancy budget</li>
+          <li>&#8226; Exposure strata threshold s_i = 0.25 (AMENDMENT-01)</li>
+          <li>&#8226; All seeds: graph / X / HM / runs / forest</li>
+          <li>&#8226; Empty NROY = finding F-EMPTY, never loosen &#964;</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot emerald"></div>
+          <h3>Two foils, one decomposition</h3>
+        </div>
+        <ul>
+          <li>&#8226; Forest: blind to interference AND conditions on one world</li>
+          <li>&#8226; E2: handles interference correctly, still one world</li>
+          <li>&#8226; Residual gap after E2 isolates calibration uncertainty</li>
+          <li>&#8226; Oracle positive control gates the harness before findings count</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot rose"></div>
+          <h3>Known sharp edges</h3>
+        </div>
+        <ul>
+          <li>&#8226; Anchor units are percentage points, simulated moments in [0,1] &#8212; rescale is task one</li>
+          <li>&#8226; &#960;&#8322; is deterministic &#8658; design-based inference cannot reach it (reported as a result, not hidden)</li>
+          <li>&#8226; Thin exposure strata: merge fallback declared in advance</li>
+          <li>&#8226; m&#8323; excluded: loads on treatment-channel covariate x&#8323;</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <p class="footer">
+      ecn593-poc-abm &#183; METHODOLOGY.md is the single source of truth &#183; drafted 2026-08-25, pre-freeze &#183; AMENDMENT-01 pending sign-off
+    </p>
+  </div>
+</body>
+</html>
