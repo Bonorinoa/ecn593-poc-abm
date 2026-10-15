@@ -76,3 +76,38 @@ in `results/poc_results_wb_F-EMPTY.json`. Overlay: `figures/overlay.png`.
 Study note with the numbers: `docs/notes/nroy-images.tex`.
 Lectures in `docs/lectures/` are **pre-wave study drafts**; they are not the
 result write-up.
+
+## Reproduce and verify
+
+```bash
+uv venv .venv --python 3.11
+source .venv/bin/activate
+uv pip install -r requirements.txt -r requirements-dev.txt
+pytest tests/ -q                      # hand-example tests must pass first (pedagogical contract)
+PYTHONPATH=src python -m poc_abm.pipeline   # re-draws noise; re-runs the waves
+```
+
+The committed JSON in `results/` is the run that produced the findings below.
+Re-running the pipeline **re-draws simulation noise**, so it will not reproduce
+those exact numbers; do not overwrite the committed results just to "refresh" a
+number. `METHODOLOGY.md` is the single source of truth — if code and that file
+disagree, the file wins and the code is a bug.
+
+## Honesty of the reproducibility record
+
+`MANIFEST.md` pins dependencies exactly and requires that *every result table
+records the commit SHA and `pip freeze` digest* that produced it. Honest status of
+that contract here: this folder was placed under version control on **2026-10-14**
+with a single initial commit, while the results in `results/*.json` were produced
+on **2026-08-28** — so the earlier result tables have **no commit SHA** binding
+them to the code that generated them. A freeze snapshot exists for the A3 gate
+(`locks/freeze-A3.txt`); later gates have no lock file yet. Treat pre-10-14
+results as "the code as frozen on the freeze date," not as bit-for-bit
+reproducible from a recorded SHA.
+
+## Deeper documentation
+
+- `METHODOLOGY.md` — the frozen blueprint (single source of truth).
+- `MANIFEST.md` — pinned dependencies and the audit-trail contract.
+- `docs/AMENDMENT-*.md` — the two accepted spec amendments.
+- `docs/notes/nroy-images.tex` — the study note with the committed numbers.
