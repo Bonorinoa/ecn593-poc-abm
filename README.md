@@ -80,7 +80,7 @@ result write-up.
 ## Reproduce and verify
 
 ```bash
-uv venv .venv --python 3.11
+uv venv .venv --python 3.14
 source .venv/bin/activate
 uv pip install -r requirements.txt -r requirements-dev.txt
 pytest tests/ -q                      # hand-example tests must pass first (pedagogical contract)

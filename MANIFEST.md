@@ -14,7 +14,7 @@ Yes, we fix dependencies. Reasons specific to this project:
 ## The pinned set (deliberately tiny)
 
 ```
-numpy==2.4.6        # kernel / moments / LHS stream through A2
+numpy==2.5.4        # kernel / moments / LHS stream through A2 (was 2.4.6 until 2026-10-22)
 ```
 
 Added later, each with its own rationale line when the time comes:
@@ -36,14 +36,17 @@ Deliberately excluded:
 ## Environment contract
 
 ```bash
-uv venv .venv --python 3.11
+uv venv .venv --python 3.14
 source .venv/bin/activate
 uv pip install -r requirements.txt -r requirements-dev.txt
 pytest tests/          # hand examples must pass BEFORE any wave runs
 ```
 
-Python 3.11 pinned (matches the verified-working numpy wheel on this machine;
-3.9 system python is broken for numpy>=2).
+Python 3.14 pinned since 2026-10-22. Earlier pins (Python 3.11, numpy 2.4.6, scipy 1.15.3,
+matplotlib 3.10.3, pytest 8.4.2) stopped working after macOS 27.0.1: its loader rejects the
+compiled scipy 1.15.3 extension (`__thread_bss … offset field is not zero`). The pins moved to
+Python 3.14, numpy 2.5.4, scipy 1.18.1, matplotlib 3.11.2, pytest 9.1.1. Results produced before
+that date used the earlier pins; `locks/freeze-A3.txt` still records them.
 
 ## Locking procedure at each phase gate
 
